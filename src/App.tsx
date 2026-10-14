@@ -41,24 +41,24 @@ function PublicWebsite() {
   useEffect(() => {
     const origin = typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
-      : 'https://r-tag22.github.io/CommerceForge';
+      : 'https://r-tag22.github.io/JNRX';
 
     const normalizedBase = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
-    const logoUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}LOGO.png`;
+    const logoUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}JNRX-Logo.jpeg`;
     const siteUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}`;
 
     // Organization Schema
     const organizationSchema = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'CommerceForge',
+      name: 'JNRX',
       url: siteUrl,
       logo: logoUrl,
-      description: 'High-performance e-commerce design and optimization agency',
+      description: 'High-performance e-commerce design and optimization dev team',
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'Sales',
-        email: 'hello@commerceforge.com',
+        email: 'contact@jnrx.agency',
       },
     };
 
@@ -66,7 +66,7 @@ function PublicWebsite() {
     const localBusinessSchema = {
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
-      name: 'CommerceForge',
+      name: 'JNRX',
       image: logoUrl,
       description: 'E-commerce optimization agency',
       url: siteUrl,
@@ -135,27 +135,27 @@ function PublicWebsite() {
   // SEO Page Title updates
   useEffect(() => {
     if (currentPath === '/blog') {
-      document.title = 'Engineering Journal & Insights — CommerceForge';
+      document.title = 'Engineering Journal & Insights — JNRX';
       return;
     }
     if (currentPath.startsWith('/blog/')) {
       const slug = currentPath.replace(/^\/blog\//, '').split('/')[0].split('?')[0];
       const post = BLOG_POSTS_DATA.find((p) => p.id === slug);
-      document.title = post ? `${post.title} — CommerceForge` : 'Engineering Story — CommerceForge';
+      document.title = post ? `${post.title} — JNRX` : 'Engineering Story — JNRX';
       return;
     }
 
     const titles: Record<string, string> = {
-      '/': 'CommerceForge — Web Design & Performance Dev Team',
-      '/about': 'About Our Dev Team & Craft — CommerceForge',
-      '/work': 'Selected Work & Rebuild Case Studies — CommerceForge',
-      '/packages': 'Productized Packages & Rates — CommerceForge',
-      '/faqs': 'Frequently Asked Questions — CommerceForge',
-      '/faq': 'Frequently Asked Questions — CommerceForge',
-      '/hire-us': 'Hire Us & Start a Project — CommerceForge',
-      '/contact': 'Hire Us & Start a Project — CommerceForge',
+      '/': 'JNRX — Web Design & Performance Dev Team',
+      '/about': 'About Our Dev Team & Craft — JNRX',
+      '/work': 'Selected Work & Rebuild Case Studies — JNRX',
+      '/packages': 'Productized Packages & Rates — JNRX',
+      '/faqs': 'Frequently Asked Questions — JNRX',
+      '/faq': 'Frequently Asked Questions — JNRX',
+      '/hire-us': 'Hire Us & Start a Project — JNRX',
+      '/contact': 'Hire Us & Start a Project — JNRX',
     };
-    document.title = titles[currentPath] || 'CommerceForge — Web Performance Dev Team';
+    document.title = titles[currentPath] || 'JNRX — Web Performance Dev Team';
   }, [currentPath]);
 
   const handleOpenInquiryWithPackage = (pkgName: string) => {

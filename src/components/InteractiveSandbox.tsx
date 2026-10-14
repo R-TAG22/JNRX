@@ -145,8 +145,8 @@ export const InteractiveSandbox: React.FC = () => {
   const tax = subtotal * 0.08875;
   const total = subtotal + tax;
 
-  const curlCommand = `curl -X POST https://api.commerceforge.dev/v1/orders/checkout \\
-  -H "Authorization: Bearer cf_live_9281a8b9e" \\
+  const curlCommand = `curl -X POST https://api.jnrx.dev/v1/orders/checkout \\
+  -H "Authorization: Bearer jnrx_live_9281a8b9e" \\
   -H "Idempotency-Key: ik_${Math.abs(quantity * 9821).toString(16)}" \\
   -H "Content-Type: application/json" \\
   -d '{

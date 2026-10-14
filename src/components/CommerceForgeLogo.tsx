@@ -11,8 +11,8 @@ export const CommerceForgeLogo: React.FC<LogoProps> = ({ className = "w-full h-f
   if (!imgError) {
     return (
       <img
-        src="/LOGO.png"
-        alt="CommerceForge Logo"
+        src="/JNRX-Logo.jpeg"
+        alt="JNRX Logo"
         className={`${className} object-contain block`}
         style={size ? { width: size, height: size } : undefined}
         onError={() => setImgError(true)}
@@ -27,7 +27,7 @@ export const CommerceForgeLogo: React.FC<LogoProps> = ({ className = "w-full h-f
       xmlns="http://www.w3.org/2000/svg"
       className={`${className} max-w-full max-h-full block`}
       style={size ? { width: size, height: size } : undefined}
-      aria-label="CommerceForge Brand Logo"
+      aria-label="JNRX Brand Logo"
     >
       <defs>
         {/* Dark Forge Metallic Green Gradient for "C" */}
@@ -248,3 +248,5 @@ export const CommerceForgeLogo: React.FC<LogoProps> = ({ className = "w-full h-f
     </svg>
   );
 };
+
+export const JNRXLogo = CommerceForgeLogo;

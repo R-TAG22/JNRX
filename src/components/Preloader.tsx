@@ -48,7 +48,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete, minDuration = 
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#08090a] text-zinc-100 select-none"
           role="status"
           aria-live="polite"
-          aria-label="Loading CommerceForge edge platform"
+          aria-label="Loading JNRX edge platform"
         >
           {/* Subtle background radial ambient glow */}
           <div className="absolute w-[500px] h-[500px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />

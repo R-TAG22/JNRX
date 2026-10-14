@@ -60,9 +60,9 @@ export const Header: React.FC<HeaderProps> = ({
     .filter((item) => item.visible !== false)
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
 
-  const brandName = headerData?.brandName || 'Commerce';
-  const brandHighlight = headerData?.brandHighlight || 'Forge';
-  const brandTagline = headerData?.brandTagline || 'E-COMMERCE AGENCY';
+  const brandName = headerData?.brandName === 'Commerce' ? 'JNR' : (headerData?.brandName || 'JNR');
+  const brandHighlight = headerData?.brandHighlight === 'Forge' ? 'X' : (headerData?.brandHighlight !== undefined ? headerData.brandHighlight : 'X');
+  const brandTagline = headerData?.brandTagline || 'WEB PERFORMANCE DEV TEAM';
   const ctaText = headerData?.ctaText || 'HIRE US';
   const ctaVisible = headerData?.ctaVisible !== false;
 
@@ -136,17 +136,17 @@ export const Header: React.FC<HeaderProps> = ({
               id="header-logo-btn"
               onClick={() => handleNav('HOME')}
               className="flex items-center gap-2.5 sm:gap-3.5 group focus:outline-none transition-transform active:scale-95 text-left shrink-0 cursor-pointer overflow-hidden"
-              aria-label="CommerceForge Home"
+              aria-label="JNRX Home"
             >
-              <div className="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 max-w-full overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-xl p-1 border shadow-xs shrink-0 bg-white/90 border-[#064E3B]/15">
+              <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 max-w-full overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-xl border shadow-xs shrink-0 bg-[#042C21] border-[#B7E84B]/30">
                 <img
-                  src={headerData?.logoUrl
+                  src={headerData?.logoUrl && headerData.logoUrl !== '/LOGO.png'
                     ? (headerData.logoUrl.startsWith('http') || headerData.logoUrl.startsWith(import.meta.env.BASE_URL)
                         ? headerData.logoUrl
                         : `${import.meta.env.BASE_URL}${headerData.logoUrl.replace(/^\//, '')}`)
-                    : `${import.meta.env.BASE_URL}LOGO.png`}
+                    : `${import.meta.env.BASE_URL}JNRX-Logo.jpeg`}
                   alt={`${brandName}${brandHighlight} Logo`}
-                  className="w-full h-full max-w-full max-h-full object-contain filter drop-shadow-xs overflow-hidden"
+                  className="w-full h-full max-w-full max-h-full object-cover filter drop-shadow-xs overflow-hidden"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     const fallbackSvg = e.currentTarget.parentElement?.querySelector('svg');

@@ -72,7 +72,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onHireClick, onRequestReve
 
   const teamEyebrow = activeContent?.brand?.teamEyebrow || 'CORE DEV TEAM LEADERSHIP';
   const teamHeading = activeContent?.brand?.teamHeading || 'MEET THE TEAM';
-  const teamDescription = activeContent?.brand?.teamDescription || 'The dedicated developers, operations specialists, and digital artisans behind every high-performance CommerceForge storefront.';
+  const teamDescription = activeContent?.brand?.teamDescription && !activeContent.brand.teamDescription.includes('CommerceForge') ? activeContent.brand.teamDescription : 'The dedicated developers, operations specialists, and digital artisans behind every high-performance JNRX storefront.';
 
   return (
     <div className={`w-full transition-colors duration-300 ${isDark ? 'text-white' : 'text-[#1E3A2B]'}`}>
@@ -219,7 +219,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onHireClick, onRequestReve
                   <span className={isDark ? 'text-white/80' : 'text-[#1E3A2B]'}>Available for Sprints</span>
                 </div>
                 <span className={`text-[10px] font-mono ${isDark ? 'text-[#B7E84B]/70' : 'text-[#8FA98F]'}`}>
-                  CommerceForge
+                  JNRX
                 </span>
               </div>
             </div>
@@ -228,7 +228,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onHireClick, onRequestReve
       </motion.section>
 
       {/* ========================================================================= */}
-      {/* 3. THE COMMERCEFORGE PROMISE (UNIFIED SECTION)                            */}
+      {/* 3. THE JNRX PROMISE (UNIFIED SECTION)                                     */}
       {/* ========================================================================= */}
       <CommerceForgePromise />
     </div>

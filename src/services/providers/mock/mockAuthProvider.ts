@@ -1,7 +1,7 @@
 import { AdminUser } from '../../../types/cms';
 import { AuthCredentials, IAuthService } from '../../cms/types';
 
-const AUTH_SESSION_KEY = 'commerceforge_cms_auth_session';
+const AUTH_SESSION_KEY = 'jnrx_cms_auth_session';
 
 export class MockAuthProvider implements IAuthService {
   private currentUser: AdminUser | null = null;
@@ -13,7 +13,7 @@ export class MockAuthProvider implements IAuthService {
   private loadSession(): AdminUser | null {
     if (typeof window === 'undefined') return null;
     try {
-      const saved = localStorage.getItem(AUTH_SESSION_KEY);
+      const saved = localStorage.getItem(AUTH_SESSION_KEY) || localStorage.getItem('commerceforge_cms_auth_session');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;

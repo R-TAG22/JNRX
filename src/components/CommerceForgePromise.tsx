@@ -19,7 +19,7 @@ export const CommerceForgePromise: React.FC<CommerceForgePromiseProps> = ({ onSe
     return null;
   }
 
-  const badge = promiseData?.badge || 'THE COMMERCEFORGE PROMISE';
+  const badge = promiseData?.badge && !promiseData.badge.includes('COMMERCEFORGE') ? promiseData.badge : 'THE JNRX PROMISE';
   const heading = promiseData?.heading || 'ARCHITECTED FOR REAL-WORLD MERCHANT CONVERSION.';
   const description = promiseData?.description || "We build modern Next.js/Vite storefronts that don't crack under load. Adhering to Core Web Vitals, optimized for sub-second TTFB, and verified accessibility standards — all with full code ownership. No bulky themes, just fast delivery.";
   const ctaText = promiseData?.ctaText || 'SEE OUR WORK';
@@ -82,7 +82,7 @@ export const CommerceForgePromise: React.FC<CommerceForgePromiseProps> = ({ onSe
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.65, ease: [0.21, 0.47, 0.32, 0.98] }}
       className="w-full bg-[#F8FAF8] py-14 sm:py-20 lg:py-24 transition-colors duration-300"
-      aria-label="The CommerceForge Promise"
+      aria-label="The JNRX Promise"
     >
       <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-10 xl:px-12">
         {/* Green-white translucent rounded-corner frame */}

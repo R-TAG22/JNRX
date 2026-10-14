@@ -26,7 +26,7 @@ export const SettingsPage: React.FC = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(draftContent, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `commerceforge-cms-backup-${Date.now()}.json`);
+    downloadAnchor.setAttribute('download', `jnrx-cms-backup-${Date.now()}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -42,7 +42,7 @@ export const SettingsPage: React.FC = () => {
       try {
         const parsed = JSON.parse(event.target?.result as string);
         if (!parsed.header || !parsed.hero || !parsed.portfolio) {
-          throw new Error('Invalid CommerceForge schema');
+          throw new Error('Invalid JNRX schema');
         }
         for (const [key, val] of Object.entries(parsed)) {
           if (key !== 'lastUpdated' && key !== 'publishedAt') {
@@ -60,6 +60,10 @@ export const SettingsPage: React.FC = () => {
 
   const handleResetToFactory = async () => {
     try {
+      localStorage.removeItem('jnrx_cms_draft_v6');
+      localStorage.removeItem('jnrx_cms_published_v6');
+      localStorage.removeItem('commerceforge_cms_draft_v5');
+      localStorage.removeItem('commerceforge_cms_published_v5');
       localStorage.removeItem('commerceforge_cms_draft_v1');
       localStorage.removeItem('commerceforge_cms_published_v1');
       showToast('info', 'Reset Complete', 'Restored original initial website content.');

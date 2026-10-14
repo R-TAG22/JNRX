@@ -9,7 +9,7 @@ interface PublicThemeContextType {
   setTheme: (theme: PublicTheme) => void;
 }
 
-const THEME_STORAGE_KEY = 'commerceforge_public_theme';
+const THEME_STORAGE_KEY = 'jnrx_public_theme';
 
 const PublicThemeContext = createContext<PublicThemeContextType>({
   theme: 'light',

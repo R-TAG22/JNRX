@@ -447,7 +447,7 @@ export const DynamicSectionRenderer: React.FC<DynamicSectionRendererProps> = ({
                           {
                             id: 't1',
                             quote:
-                              'CommerceForge rebuilt our store in 8 days. Our conversion rate instantly leaped from 1.4% to 3.8%!',
+                              'JNRX rebuilt our store in 8 days. Our conversion rate instantly leaped from 1.4% to 3.8%!',
                             author: 'Marcus Vance',
                             role: 'Founder',
                             company: 'Gold & Grove',

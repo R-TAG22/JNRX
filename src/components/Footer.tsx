@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Lock } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { useRouter } from '../admin/router';
 import { useCMS } from '../context/CMSContext';
 
@@ -37,8 +37,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
     navigate(path.startsWith('/') ? path : `/${path}`);
   };
 
-  const contactEmail = footerData?.contactEmail || 'contact@commerceforge.agency';
-  const copyrightText = footerData?.copyrightText || 'Proudly crafted by CommerceForge Dev Team. High-performance eCommerce storefronts.';
+  const contactEmail = footerData?.contactEmail && !footerData.contactEmail.includes('commerceforge') ? footerData.contactEmail : 'contact@jnrx.agency';
+  const copyrightText = footerData?.copyrightText && !footerData.copyrightText.includes('CommerceForge') ? footerData.copyrightText : 'Proudly crafted by JNRX Dev Team. High-performance eCommerce storefronts.';
 
   const defaultColumns = [
     {
@@ -74,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
     },
     {
       id: 'col-4',
-      title: 'COMMERCEFORGE',
+      title: 'JNRX',
       links: [
         { id: 'l-13', label: 'Basic Rebuild — $159', url: '/packages' },
         { id: 'l-14', label: 'Standard Website — $260', url: '/packages' },
@@ -190,26 +190,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
             {copyrightText}
           </p>
 
-          <div className="flex items-center gap-5 shrink-0">
-            <button
-              type="button"
-              onClick={() => navigate('/admin')}
-              className="inline-flex items-center gap-1 hover:text-[#B7E84B] transition-colors cursor-pointer"
-              title="Open CMS Admin Dashboard"
-            >
-              <Lock className="w-3 h-3" />
-              <span>Admin</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="inline-flex items-center gap-1 hover:text-[#B7E84B] transition-colors cursor-pointer"
-            >
-              <span>Back to Top</span>
-              <ArrowUp className="w-3 h-3" />
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            className="inline-flex items-center gap-1 hover:text-[#B7E84B] transition-colors cursor-pointer shrink-0"
+          >
+            <span>Back to Top</span>
+            <ArrowUp className="w-3 h-3" />
+          </button>
         </div>
       </div>
     </footer>

@@ -29,7 +29,7 @@ export const VolumePricingSlider: React.FC<VolumePricingSliderProps> = ({ onSele
       hostingCost = 3000;
     }
 
-    // CommerceForge direct routing cost: ~1.8% + $0 edge infra
+    // JNRX direct routing cost: ~1.8% + $0 edge infra
     const legacyMonthlyCost = gmv * feeRate + hostingCost;
     const forgeMonthlyCost = gmv * 0.0185 + 250;
     const monthlySavings = Math.max(800, legacyMonthlyCost - forgeMonthlyCost);
@@ -99,7 +99,7 @@ export const VolumePricingSlider: React.FC<VolumePricingSliderProps> = ({ onSele
             Infrastructure & Processing Yield Estimator
           </h3>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
-            Simulate your merchant savings by transitioning from high-friction monolithic platforms to CommerceForge's sub-50ms edge checkout pipeline.
+            Simulate your merchant savings by transitioning from high-friction monolithic platforms to JNRX's sub-50ms edge checkout pipeline.
           </p>
         </div>
 

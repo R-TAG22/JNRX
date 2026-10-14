@@ -1,5 +1,5 @@
 /**
- * Fallback image assets and error handlers for CommerceForge.
+ * Fallback image assets and error handlers for JNRX.
  * Ensures zero broken image icons across all responsive viewports and routes.
  */
 import type React from 'react';

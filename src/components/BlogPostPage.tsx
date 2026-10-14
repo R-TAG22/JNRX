@@ -58,7 +58,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ postId, onHireClick 
 
   const handleShareTwitter = () => {
     if (!post) return;
-    const shareText = encodeURIComponent(`${post.title} — via CommerceForge Engineering Journal`);
+    const shareText = encodeURIComponent(`${post.title} — via JNRX Engineering Journal`);
     const shareUrl = encodeURIComponent(window.location.href);
     window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
   };
@@ -353,7 +353,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ postId, onHireClick 
           />
           <div className="flex-1">
             <div className="text-base font-black text-[#064E3B]">{post.author.name}</div>
-            <div className="text-xs font-semibold text-[#047857] mb-2">{post.author.role} at CommerceForge</div>
+            <div className="text-xs font-semibold text-[#047857] mb-2">{post.author.role} at JNRX</div>
             <p className="text-xs sm:text-sm text-[#064E3B]/75 leading-relaxed font-normal">
               Specializing in high-performance React architectures, sub-600ms e-commerce optimization, and conversion engineering for high-growth direct-to-consumer storefronts.
             </p>
@@ -479,7 +479,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ postId, onHireClick 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/10 text-[#B7E84B] mb-4">
             <Sparkles className="w-3 h-3" />
-            WORK WITH COMMERCEFORGE
+            WORK WITH JNRX
           </span>
 
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white">

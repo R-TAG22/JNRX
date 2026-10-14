@@ -199,7 +199,7 @@ export const SectionsEditor: React.FC = () => {
           ? [
               {
                 id: 't-1',
-                quote: 'CommerceForge rebuilt our checkout flow in 8 days. Our mobile conversion rate jumped by 180%!',
+                quote: 'JNRX rebuilt our checkout flow in 8 days. Our mobile conversion rate jumped by 180%!',
                 author: 'Marcus Vance',
                 role: 'Founder',
                 company: 'Gold & Grove',

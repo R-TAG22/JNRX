@@ -9,7 +9,7 @@ export const AdminLogin: React.FC = () => {
   const { navigate } = useRouter();
   const { showToast } = useToast();
 
-  const [email, setEmail] = useState('admin@commerceforge.agency');
+  const [email, setEmail] = useState('admin@jnrx.agency');
   const [password, setPassword] = useState('devteam2026');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +28,7 @@ export const AdminLogin: React.FC = () => {
 
     try {
       await login({ email, password });
-      showToast('success', 'Welcome Back', 'Logged into CommerceForge CMS Dashboard.');
+      showToast('success', 'Welcome Back', 'Logged into JNRX CMS Dashboard.');
       navigate('/admin');
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Invalid credentials. Please try again.');
@@ -72,18 +72,18 @@ export const AdminLogin: React.FC = () => {
       <div className="w-full max-w-md relative z-10 my-12">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white p-2 shadow-md border border-slate-200 mb-4 overflow-hidden">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#042C21] p-1.5 shadow-md border border-slate-200 mb-4 overflow-hidden">
             <img
-              src="/LOGO.png"
-              alt="CommerceForge Logo"
-              className="w-full h-full object-contain"
+              src="/JNRX-Logo.jpeg"
+              alt="JNRX Logo"
+              className="w-full h-full object-cover rounded-xl"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
             />
           </div>
           <h1 className="text-2xl font-black tracking-tight uppercase text-slate-900">
-            Commerce<span className="text-emerald-600">Forge</span> CMS
+            JNR<span className="text-emerald-600">X</span> CMS
           </h1>
           <p className="text-xs font-bold tracking-wider uppercase mt-1 text-slate-500">
             Website Content Management System
@@ -126,7 +126,7 @@ export const AdminLogin: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@commerceforge.agency"
+                  placeholder="admin@jnrx.agency"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 text-sm font-semibold transition-all focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs"
                 />
               </div>
@@ -251,7 +251,7 @@ export const AdminLogin: React.FC = () => {
                   required
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
-                  placeholder="admin@commerceforge.agency"
+                  placeholder="admin@jnrx.agency"
                   className="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-sm text-slate-900 font-semibold focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20"
                 />
                 <div className="flex items-center justify-end gap-3 pt-3">

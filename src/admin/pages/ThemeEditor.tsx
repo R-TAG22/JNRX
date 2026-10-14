@@ -368,7 +368,7 @@ export const ThemeEditor: React.FC<ThemeEditorProps> = ({ onBack }) => {
           >
             <div className="p-8 space-y-8">
               <header className="flex justify-between items-center border-b pb-4 border-black/10">
-                <div className="font-black text-sm tracking-tight">CommerceForge</div>
+                <div className="font-black text-sm tracking-tight">JNRX</div>
                 <div className="text-xs space-x-4 opacity-75">
                   <span>Work</span>
                   <span>Pricing</span>

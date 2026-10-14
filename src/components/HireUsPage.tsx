@@ -228,7 +228,7 @@ export const HireUsPage: React.FC = () => {
               </span>
 
               <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight">
-                WHY LOCAL BUSINESSES TRUST COMMERCEFORGE
+                WHY LOCAL BUSINESSES TRUST JNRX
               </h2>
 
               <div className="space-y-4">
@@ -272,7 +272,7 @@ export const HireUsPage: React.FC = () => {
               <div className="pt-4 border-t border-white/10">
                 <div className="flex items-center gap-2 text-xs text-white/80">
                   <Mail className="w-4 h-4 text-[#B7E84B]" />
-                  <span>Direct inquiries: contact@commerceforge.agency</span>
+                  <span>Direct inquiries: contact@jnrx.agency</span>
                 </div>
               </div>
             </div>

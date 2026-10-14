@@ -65,7 +65,7 @@ export const PublishingPage: React.FC = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(draftContent, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `commerceforge-backup-${new Date().toISOString().slice(0, 10)}.json`);
+    downloadAnchor.setAttribute('download', `jnrx-backup-${new Date().toISOString().slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -214,7 +214,7 @@ export const PublishingPage: React.FC = () => {
           Danger Zone
         </h3>
         <p className="text-xs text-slate-600 font-medium">
-          Reset all website content back to the original CommerceForge agency defaults.
+          Reset all website content back to the original JNRX agency defaults.
         </p>
         <button
           type="button"

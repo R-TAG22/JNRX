@@ -108,7 +108,7 @@ export const DashboardOverview: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
           <div>
             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-emerald-700">
-              COMMERCEFORGE CMS
+              JNRX CMS
             </span>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
               Website Overview

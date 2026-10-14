@@ -20,7 +20,7 @@ export const DEFAULT_THEME_CONFIG: ThemeConfig = {
   forceReducedMotion: false,
 };
 
-const STORAGE_KEY = 'commerceforge_theme_config';
+const STORAGE_KEY = 'jnrx_theme_config';
 const STYLE_TAG_ID = 'theme-sync-custom-css';
 
 interface ThemeSyncContextType {
@@ -94,7 +94,7 @@ export const ThemeSyncProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Broadcast update via postMessage for preview iframes or cross-window sync
     try {
-      window.postMessage({ type: 'COMMERCEFORGE_THEME_UPDATE', config }, '*');
+      window.postMessage({ type: 'JNRX_THEME_UPDATE', config }, '*');
     } catch {
       // Safe no-op
     }
@@ -105,7 +105,7 @@ export const ThemeSyncProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     if (typeof window === 'undefined') return;
 
     const handleMessage = (event: MessageEvent) => {
-      if (event.data && event.data.type === 'COMMERCEFORGE_THEME_UPDATE' && event.data.config) {
+      if (event.data && (event.data.type === 'JNRX_THEME_UPDATE' || event.data.type === 'COMMERCEFORGE_THEME_UPDATE') && event.data.config) {
         setConfig((prev) => ({ ...prev, ...event.data.config }));
       }
     };

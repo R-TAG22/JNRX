@@ -9,7 +9,7 @@ interface AdminThemeContextType {
   toggleTheme: () => void;
 }
 
-const THEME_STORAGE_KEY = 'commerceforge_admin_theme';
+const THEME_STORAGE_KEY = 'jnrx_admin_theme';
 
 const AdminThemeContext = createContext<AdminThemeContextType | undefined>(undefined);
 

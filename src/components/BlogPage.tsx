@@ -348,7 +348,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onHireClick }) => {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#064E3B]/15 shadow-xs mb-4 select-none">
               <span className="w-2 h-2 rounded-full bg-[#B7E84B] shadow-[0_0_8px_#B7E84B]" />
               <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#064E3B]">
-                COMMERCEFORGE ENGINEERING JOURNAL
+                JNRX ENGINEERING JOURNAL
               </span>
             </div>
 

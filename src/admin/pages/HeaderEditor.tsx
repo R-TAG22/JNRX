@@ -159,19 +159,19 @@ export const HeaderEditor: React.FC = () => {
 
         <div className="pt-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
-            Brand Logo Path (e.g., /LOGO.png)
+            Brand Logo Path (e.g., /JNRX-Logo.jpeg)
           </label>
           <div className="flex items-center gap-3">
             <input
               type="text"
-              value={header.logoUrl || '/LOGO.png'}
+              value={header.logoUrl || '/JNRX-Logo.jpeg'}
               onChange={(e) => setHeader({ ...header, logoUrl: e.target.value })}
-              placeholder="/LOGO.png"
+              placeholder="/JNRX-Logo.jpeg"
               className="flex-1 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#B7E84B]"
             />
             <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0">
               <img
-                src={header.logoUrl || '/LOGO.png'}
+                src={header.logoUrl || '/JNRX-Logo.jpeg'}
                 alt="Logo preview"
                 className="w-full h-full object-contain"
                 onError={(e) => {

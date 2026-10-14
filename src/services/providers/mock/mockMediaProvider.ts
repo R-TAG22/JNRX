@@ -2,7 +2,7 @@ import { MediaAsset } from '../../../types/cms';
 import { IMediaService } from '../../cms/types';
 import { INITIAL_MEDIA_ASSETS } from './initialData';
 
-const MEDIA_STORAGE_KEY = 'commerceforge_cms_media_assets_v1';
+const MEDIA_STORAGE_KEY = 'jnrx_cms_media_assets_v1';
 
 export class MockMediaProvider implements IMediaService {
   private mediaList: MediaAsset[];
@@ -14,7 +14,7 @@ export class MockMediaProvider implements IMediaService {
   private loadFromStorage(): MediaAsset[] | null {
     if (typeof window === 'undefined') return null;
     try {
-      const saved = localStorage.getItem(MEDIA_STORAGE_KEY);
+      const saved = localStorage.getItem(MEDIA_STORAGE_KEY) || localStorage.getItem('commerceforge_cms_media_assets_v1');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;

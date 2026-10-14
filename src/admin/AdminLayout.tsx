@@ -141,12 +141,19 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         {/* Brand / Logo */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-slate-200 bg-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#B7E84B] flex items-center justify-center text-[#0E1B13] font-black text-sm shadow-xs border border-emerald-600/20">
-              CF
+            <div className="w-8 h-8 rounded-xl bg-[#042C21] flex items-center justify-center text-[#B7E84B] font-black text-xs shadow-xs border border-emerald-600/20 overflow-hidden">
+              <img
+                src="/JNRX-Logo.jpeg"
+                alt="JNRX"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-black tracking-tight leading-none text-slate-900">
-                COMMERCEFORGE
+                JNRX
               </span>
               <span className="text-[10px] font-black tracking-widest uppercase text-emerald-700 mt-0.5">
                 ADMIN CMS

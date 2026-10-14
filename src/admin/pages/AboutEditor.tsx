@@ -93,7 +93,7 @@ export const AboutEditor: React.FC = () => {
       // Team Section header
       teamEyebrow: b.teamEyebrow || 'CORE DEV TEAM LEADERSHIP',
       teamHeading: b.teamHeading || 'MEET THE TEAM',
-      teamDescription: b.teamDescription || 'The dedicated developers, operations specialists, and digital artisans behind every high-performance CommerceForge storefront.',
+      teamDescription: b.teamDescription || 'The dedicated developers, operations specialists, and digital artisans behind every high-performance JNRX storefront.',
     };
   };
 
@@ -104,7 +104,7 @@ export const AboutEditor: React.FC = () => {
     id: 'promise-section',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    badge: 'THE COMMERCEFORGE PROMISE',
+    badge: 'THE JNRX PROMISE',
     heading: 'ARCHITECTED FOR REAL-WORLD MERCHANT CONVERSION.',
     description: "We build modern Next.js/Vite storefronts that don't crack under load. Adhering to Core Web Vitals, optimized for sub-second TTFB, and verified accessibility standards — all with full code ownership. No bulky themes, just fast delivery.",
     cards: [
@@ -145,7 +145,7 @@ export const AboutEditor: React.FC = () => {
   // Save Promise
   const handleSavePromise = async () => {
     await updateDraftContent({ promiseSection: promiseForm });
-    showToast('success', 'Promise Section Saved', 'The CommerceForge Promise card updated.');
+    showToast('success', 'Promise Section Saved', 'The JNRX Promise card updated.');
   };
 
   // Team Member actions
@@ -267,7 +267,7 @@ export const AboutEditor: React.FC = () => {
               : 'border-transparent text-slate-500 hover:text-slate-900'
           }`}
         >
-          4. The CommerceForge Promise
+          4. The JNRX Promise
         </button>
       </div>
 
@@ -699,7 +699,7 @@ export const AboutEditor: React.FC = () => {
                 value={brandForm.teamDescription || ''}
                 onChange={(e) => setBrandForm({ ...brandForm, teamDescription: e.target.value })}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium text-xs shadow-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-none"
-                placeholder="The dedicated developers, operations specialists, and digital artisans behind every high-performance CommerceForge storefront."
+                placeholder="The dedicated developers, operations specialists, and digital artisans behind every high-performance JNRX storefront."
               />
             </div>
 
@@ -951,14 +951,14 @@ export const AboutEditor: React.FC = () => {
       )}
 
       {/* ========================================================================= */}
-      {/* TAB 4: THE COMMERCEFORGE PROMISE                                          */}
+      {/* TAB 4: THE JNRX PROMISE                                                 */}
       {/* ========================================================================= */}
       {activeTab === 'promise' && (
         <div className="p-6 sm:p-8 rounded-3xl border border-slate-200 bg-white shadow-sm space-y-6">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
               <h2 className="text-base font-black uppercase tracking-wider text-slate-900">
-                The CommerceForge Promise Section
+                The JNRX Promise Section
               </h2>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
                 Displays the high-performance commitment card, 3 core pillars, and portfolio link.

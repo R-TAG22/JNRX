@@ -14,8 +14,8 @@ import {
 } from '../../cms/types';
 import { INITIAL_WEBSITE_CONTENT } from './initialData';
 
-const DRAFT_STORAGE_KEY = 'commerceforge_cms_draft_v5';
-const PUBLISHED_STORAGE_KEY = 'commerceforge_cms_published_v5';
+const DRAFT_STORAGE_KEY = 'jnrx_cms_draft_v6';
+const PUBLISHED_STORAGE_KEY = 'jnrx_cms_published_v6';
 
 export class MockContentProvider implements IContentService, IPortfolioService, IPackageService, IProcessService, IFAQService {
   private draftContent: WebsiteContent;
@@ -29,7 +29,7 @@ export class MockContentProvider implements IContentService, IPortfolioService, 
   private loadFromStorage(key: string): WebsiteContent | null {
     if (typeof window === 'undefined') return null;
     try {
-      const saved = localStorage.getItem(key);
+      const saved = localStorage.getItem(key) || (key.includes('published') ? localStorage.getItem('commerceforge_cms_published_v5') : localStorage.getItem('commerceforge_cms_draft_v5'));
       if (!saved) return null;
       const parsed = JSON.parse(saved);
       const rawCustomSections = Array.isArray(parsed.customSections) ? parsed.customSections : INITIAL_WEBSITE_CONTENT.customSections;
@@ -40,6 +40,18 @@ export class MockContentProvider implements IContentService, IPortfolioService, 
           s.id !== 'section-about-standards' &&
           s.badge !== 'DEV TEAM PROMISE'
       );
+      // Migrate legacy CommerceForge branding to JNRX
+      if (parsed.header) {
+        if (parsed.header.brandName === 'Commerce') parsed.header.brandName = 'JNR';
+        if (parsed.header.brandHighlight === 'Forge') parsed.header.brandHighlight = 'X';
+        if (!parsed.header.logoUrl || parsed.header.logoUrl === '/LOGO.png') parsed.header.logoUrl = '/JNRX-Logo.jpeg';
+      }
+      if (parsed.footer) {
+        if (parsed.footer.brandName === 'Commerce') parsed.footer.brandName = 'JNR';
+        if (parsed.footer.brandHighlight === 'Forge') parsed.footer.brandHighlight = 'X';
+        if (!parsed.footer.contactEmail || parsed.footer.contactEmail.includes('commerceforge')) parsed.footer.contactEmail = 'contact@jnrx.agency';
+        if (!parsed.footer.copyrightText || parsed.footer.copyrightText.includes('CommerceForge')) parsed.footer.copyrightText = 'JNRX Dev Team. All rights reserved. Transparent web design for local businesses.';
+      }
       return {
         ...INITIAL_WEBSITE_CONTENT,
         ...parsed,

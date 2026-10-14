@@ -224,7 +224,7 @@ export const GlobalContentEditor: React.FC<GlobalContentEditorProps> = ({ initia
               value={footerForm.copyrightText || ''}
               onChange={(e) => setFooterForm({ ...footerForm, copyrightText: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs shadow-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-none"
-              placeholder="Proudly crafted by CommerceForge Dev Team. High-performance eCommerce storefronts."
+              placeholder="Proudly crafted by JNRX Dev Team. High-performance eCommerce storefronts."
             />
           </div>
 
@@ -368,7 +368,7 @@ export const GlobalContentEditor: React.FC<GlobalContentEditorProps> = ({ initia
                 value={footerForm.contactEmail || ''}
                 onChange={(e) => setFooterForm({ ...footerForm, contactEmail: e.target.value })}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-medium shadow-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/20 outline-none"
-                placeholder="contact@commerceforge.agency"
+                placeholder="contact@jnrx.agency"
               />
             </div>
 
