@@ -348,4 +348,23 @@
   color: #94A3B8 !important;
 }
 
+/* ========================================================================= */
+/* 5. Header Brand Logo Light Consistency                                   */
+/* ========================================================================= */
+#header-logo-btn,
+#header-logo-btn:active,
+#header-logo-btn:hover,
+#header-logo-btn:focus,
+#header-logo-btn:focus-visible {
+  -webkit-tap-highlight-color: transparent !important;
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#header-logo-btn img {
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+}
+
 

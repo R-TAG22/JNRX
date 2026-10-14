@@ -72,11 +72,11 @@ export const AdminLogin: React.FC = () => {
       <div className="w-full max-w-md relative z-10 my-12">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#042C21] p-1.5 shadow-md border border-slate-200 mb-4 overflow-hidden">
+          <div className="inline-flex items-center justify-center w-28 h-28 mb-3">
             <img
               src="/JNRX-Logo.jpeg"
               alt="JNRX Logo"
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-contain mix-blend-multiply"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}

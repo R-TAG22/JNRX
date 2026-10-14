@@ -169,7 +169,7 @@ export const HeaderEditor: React.FC = () => {
               placeholder="/JNRX-Logo.jpeg"
               className="flex-1 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#B7E84B]"
             />
-            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 p-1 flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 flex items-center justify-center shrink-0">
               <img
                 src={header.logoUrl || '/JNRX-Logo.jpeg'}
                 alt="Logo preview"

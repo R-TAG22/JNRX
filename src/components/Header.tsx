@@ -135,10 +135,11 @@ export const Header: React.FC<HeaderProps> = ({
             <button 
               id="header-logo-btn"
               onClick={() => handleNav('HOME')}
-              className="flex items-center gap-2.5 sm:gap-3.5 group focus:outline-none transition-transform active:scale-95 text-left shrink-0 cursor-pointer overflow-hidden"
+              className="flex items-center gap-2.5 sm:gap-3.5 group focus:outline-none text-left shrink-0 cursor-pointer overflow-hidden select-none bg-transparent active:bg-transparent hover:bg-transparent"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
               aria-label="JNRX Home"
             >
-              <div className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 max-w-full overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-xl border shadow-xs shrink-0 bg-[#042C21] border-[#B7E84B]/30">
+              <div className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 bg-transparent">
                 <img
                   src={headerData?.logoUrl && headerData.logoUrl !== '/LOGO.png'
                     ? (headerData.logoUrl.startsWith('http') || headerData.logoUrl.startsWith(import.meta.env.BASE_URL)
@@ -146,21 +147,22 @@ export const Header: React.FC<HeaderProps> = ({
                         : `${import.meta.env.BASE_URL}${headerData.logoUrl.replace(/^\//, '')}`)
                     : `${import.meta.env.BASE_URL}JNRX-Logo.jpeg`}
                   alt={`${brandName}${brandHighlight} Logo`}
-                  className="w-full h-full max-w-full max-h-full object-cover filter drop-shadow-xs overflow-hidden"
+                  className="w-full h-full object-contain mix-blend-multiply select-none pointer-events-none"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     const fallbackSvg = e.currentTarget.parentElement?.querySelector('svg');
                     if (fallbackSvg) fallbackSvg.classList.remove('hidden');
                   }}
                 />
-                <CommerceForgeLogo className="hidden w-full h-full max-w-full max-h-full object-contain filter drop-shadow-xs overflow-hidden" />
+                <CommerceForgeLogo className="hidden w-full h-full max-w-full max-h-full object-contain" />
               </div>
 
               <div className="flex flex-col">
                 <div className="flex items-center tracking-tight">
                   <span className="font-black text-lg sm:text-xl md:text-2xl tracking-[-0.03em]">
                     <span className="text-[#064E3B]">{brandName}</span>
-                    <span className="text-[#B7E84B] group-hover:brightness-110 transition-colors duration-300">{brandHighlight}</span>
+                    <span className="text-[#B7E84B] transition-colors duration-300">{brandHighlight}</span>
                   </span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#B7E84B] ml-1 sm:ml-1.5 mb-0.5 shadow-[0_0_8px_#B7E84B]"></span>
                 </div>

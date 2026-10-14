@@ -817,7 +817,6 @@ export const INITIAL_WEBSITE_CONTENT: WebsiteContent = {
     brandName: 'JNR',
     brandHighlight: 'X',
     brandTagline: 'WEB PERFORMANCE DEV TEAM',
-    logoUrl: '/JNRX-Logo.jpeg',
     description: 'We rebuild outdated, sluggish websites into high-converting, mobile-first digital storefronts for growing local businesses and independent brands.',
     originBadge: 'Built with pride in the Philippines 🇵🇭',
     contactEmail: 'contact@jnrx.agency',
