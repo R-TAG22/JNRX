@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     base: process.env.GITHUB_ACTIONS === 'true' || process.env.GITHUB_PAGES === 'true' 
-      ? '/CommerceForge/' 
+      ? '/JNRX/' 
       : '/',
     plugins: [react(), tailwindcss()],
     resolve: {
