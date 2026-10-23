@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { ProjectInquiry } from '../types';
+import { submitProjectInquiry } from '../supabaseClient';
 
 interface InquiryModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const firstFocusableRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<ProjectInquiry>({
     name: '',
@@ -85,9 +87,23 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      await submitProjectInquiry({
+        name: formData.name,
+        email: formData.email,
+        storeUrl: formData.storeUrl,
+        packageTier: formData.packageTier,
+        message: formData.message,
+      });
+    } catch (err) {
+      console.warn('Inquiry submit handled with fallback:', err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
 
   const handleResetAndClose = () => {
@@ -260,9 +276,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
 
                       <button
                         type="submit"
-                        className="w-full py-3.5 px-6 bg-[#B7E84B] text-[#0B0F17] font-bold uppercase tracking-wider text-xs sm:text-sm rounded-xl hover:bg-[#a3d438] transition-colors focus:outline-none focus:ring-2 focus:ring-[#B7E84B] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                        disabled={isSubmitting}
+                        className="w-full py-3.5 px-6 bg-[#B7E84B] text-[#0B0F17] font-bold uppercase tracking-wider text-xs sm:text-sm rounded-xl hover:bg-[#a3d438] transition-colors focus:outline-none focus:ring-2 focus:ring-[#B7E84B] focus:ring-offset-2 flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-60"
                       >
-                        <span>Submit Inquiry</span>
+                        <span>{isSubmitting ? 'Sending to JNRX...' : 'Submit Inquiry'}</span>
                         <ArrowRight className="w-4 h-4 text-[#0B0F17]" />
                       </button>
 

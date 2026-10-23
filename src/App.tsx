@@ -28,6 +28,8 @@ import { HireUsPage } from './components/HireUsPage';
 import { BlogPage, BLOG_POSTS_DATA } from './components/BlogPage';
 import { BlogPostPage } from './components/BlogPostPage';
 import { DynamicSectionRenderer } from './components/DynamicSectionRenderer';
+import { SignIn } from './pages/SignIn';
+import { SignUp } from './pages/SignUp';
 
 function PublicWebsite() {
   const [isInquiryOpen, setIsInquiryOpen] = useState<boolean>(false);
@@ -154,6 +156,10 @@ function PublicWebsite() {
       '/faq': 'Frequently Asked Questions — JNRX',
       '/hire-us': 'Hire Us & Start a Project — JNRX',
       '/contact': 'Hire Us & Start a Project — JNRX',
+      '/signin': 'Sign In — JNRX',
+      '/login': 'Sign In — JNRX',
+      '/signup': 'Sign Up — JNRX',
+      '/register': 'Sign Up — JNRX',
     };
     document.title = titles[currentPath] || 'JNRX — Web Performance Dev Team';
   }, [currentPath]);
@@ -234,6 +240,14 @@ function PublicWebsite() {
             <CtaBanner onCtaClick={() => setIsInquiryOpen(true)} />
           </>
         );
+
+      case '/signin':
+      case '/login':
+        return <SignIn />;
+
+      case '/signup':
+      case '/register':
+        return <SignUp />;
 
       case '/':
       default: {

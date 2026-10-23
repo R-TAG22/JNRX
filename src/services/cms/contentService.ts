@@ -1,7 +1,6 @@
-import { mockContentProvider } from '../providers/mock/mockContentProvider';
+import { supabaseContentProvider } from '../providers/supabase/supabaseContentProvider';
 import { IContentService } from './types';
 
 // The application interacts with this abstract content service.
-// Currently it delegates to mockContentProvider.
-// When Firebase is connected later by the user, this can simply delegate to FirebaseContentProvider.
-export const contentService: IContentService = mockContentProvider;
+// Now connected to Supabase backend provider with automatic local fallback.
+export const contentService: IContentService = supabaseContentProvider;

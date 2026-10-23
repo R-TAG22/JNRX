@@ -14,6 +14,7 @@ import {
   PanelBottom, 
   Megaphone, 
   Mail, 
+  Inbox,
   Image as ImageIcon, 
   Settings as SettingsIcon, 
   UploadCloud, 
@@ -23,6 +24,7 @@ import {
 import { useCMS } from '../context/CMSContext';
 import { useRouter } from './router';
 import { useToast } from './components/Toast';
+import { fetchProjectInquiries } from '../supabaseClient';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -41,6 +43,24 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const [newLeadsCount, setNewLeadsCount] = useState(0);
+
+  // Poll for new leads in Supabase so sidebar updates live
+  useEffect(() => {
+    const updateLeadsBadge = async () => {
+      try {
+        const items = await fetchProjectInquiries();
+        const unreadCount = items.filter((i) => !i.status || i.status === 'new').length;
+        setNewLeadsCount(unreadCount);
+      } catch {
+        // Continue silently
+      }
+    };
+
+    updateLeadsBadge();
+    const interval = setInterval(updateLeadsBadge, 8000);
+    return () => clearInterval(interval);
+  }, [currentPath]);
 
   // Force clean white-card and high-contrast styling on document root
   useEffect(() => {
@@ -82,6 +102,13 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       heading: null,
       items: [
         { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+        { 
+          label: 'Client Inquiries', 
+          path: '/admin/leads', 
+          icon: Inbox, 
+          badge: newLeadsCount > 0 ? `${newLeadsCount} NEW` : undefined,
+          isNew: newLeadsCount > 0 
+        },
       ],
     },
     {
@@ -182,7 +209,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               {group.items.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentPath === item.path || 
-                  (item.path === '/admin' && currentPath === '/admin/dashboard');
+                  (item.path === '/admin' && currentPath === '/admin/dashboard') ||
+                  (item.path === '/admin/leads' && (currentPath === '/admin/leads' || currentPath === '/admin/inquiries'));
 
                 return (
                   <button
@@ -203,9 +231,20 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                       <span>{item.label}</span>
                     </div>
 
-                    {isActive && (
-                      <ChevronRight className="w-3.5 h-3.5 text-[#0E1B13]" />
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {'badge' in item && item.badge && (
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all ${
+                          isActive 
+                            ? 'bg-[#0E1B13] text-[#B7E84B]' 
+                            : 'bg-emerald-600 text-white animate-pulse'
+                        }`}>
+                          {item.badge}
+                        </span>
+                      )}
+                      {isActive && (
+                        <ChevronRight className="w-3.5 h-3.5 text-[#0E1B13]" />
+                      )}
+                    </div>
                   </button>
                 );
               })}

@@ -3,6 +3,7 @@ import { ArrowRight, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useCMS } from '../context/CMSContext';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { submitProjectInquiry } from '../supabaseClient';
 
 interface CtaBannerProps {
   onCtaClick: () => void;
@@ -15,14 +16,31 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onCtaClick }) => {
 
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
+    const cleanEmail = email.trim();
+    if (!cleanEmail) {
       onCtaClick();
       return;
     }
-    setSubmitted(true);
+
+    setIsSubmitting(true);
+    try {
+      const derivedName = cleanEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'Prospect';
+      await submitProjectInquiry({
+        name: derivedName,
+        email: cleanEmail,
+        packageTier: "LET'S WORK TOGETHER",
+        message: "Submitted via 'Let's work together' bottom CTA banner.",
+      });
+    } catch (err) {
+      console.warn('Could not submit CTA lead to Supabase:', err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
 
   if (ctaData?.published === false) {
@@ -87,9 +105,10 @@ export const CtaBanner: React.FC<CtaBannerProps> = ({ onCtaClick }) => {
                 <button
                   type="submit"
                   id="cta-work-together-btn"
-                  className="h-10 px-5 sm:px-6 rounded-lg bg-[#B7E84B] hover:bg-[#a6d83b] text-[#0B0F17] text-xs font-black uppercase tracking-wider transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap shrink-0 shadow-sm flex items-center gap-1.5"
+                  disabled={isSubmitting}
+                  className="h-10 px-5 sm:px-6 rounded-lg bg-[#B7E84B] hover:bg-[#a6d83b] text-[#0B0F17] text-xs font-black uppercase tracking-wider transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap shrink-0 shadow-sm flex items-center gap-1.5 disabled:opacity-60"
                 >
-                  <span>{buttonText}</span>
+                  <span>{isSubmitting ? 'SENDING...' : buttonText}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#0B0F17]" />
                 </button>
               </form>

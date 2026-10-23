@@ -1,4 +1,4 @@
-import { mockAuthProvider } from '../providers/mock/mockAuthProvider';
+import { supabaseAuthProvider } from '../providers/supabase/supabaseAuthProvider';
 import { IAuthService } from './types';
 
-export const authService: IAuthService = mockAuthProvider;
+export const authService: IAuthService = supabaseAuthProvider;

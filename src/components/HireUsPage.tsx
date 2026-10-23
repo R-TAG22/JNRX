@@ -4,9 +4,12 @@ import { motion } from 'motion/react';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { DynamicSectionRenderer } from './DynamicSectionRenderer';
 
+import { submitProjectInquiry } from '../supabaseClient';
+
 export const HireUsPage: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState('STANDARD ($260)');
   const [formData, setFormData] = useState({
     name: '',
@@ -25,9 +28,23 @@ export const HireUsPage: React.FC = () => {
     { id: 'custom', label: 'ENTERPRISE / CUSTOM AUDIT', turnaround: 'Tailored' },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      await submitProjectInquiry({
+        name: formData.name || 'Prospective Client',
+        email: formData.email,
+        storeUrl: formData.storeUrl,
+        packageTier: selectedPackage,
+        message: `${formData.message ? formData.message + ' | ' : ''}Timeline: ${formData.timeline}, Budget: ${formData.budget}`,
+      });
+    } catch (err) {
+      console.warn('Could not submit project inquiry to Supabase:', err);
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
 
   return (
@@ -210,10 +227,11 @@ export const HireUsPage: React.FC = () => {
                 <div>
                   <button
                     type="submit"
-                    className="w-full py-4 px-6 rounded-full bg-[#1E3A2B] text-white text-xs sm:text-sm font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 hover:bg-[#0F241A] transition-all hover:scale-[1.01] shadow-lg cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full py-4 px-6 rounded-full bg-[#1E3A2B] text-white text-xs sm:text-sm font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 hover:bg-[#0F241A] transition-all hover:scale-[1.01] shadow-lg cursor-pointer disabled:opacity-60"
                   >
                     <Send className="w-4 h-4 text-[#B7E84B]" />
-                    <span>SUBMIT INQUIRY & GET FREE AUDIT</span>
+                    <span>{isSubmitting ? 'SUBMITTING TO JNRX...' : 'SUBMIT INQUIRY & GET FREE AUDIT'}</span>
                   </button>
                 </div>
               </form>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Home, 
   Users, 
@@ -13,12 +13,17 @@ import {
   CheckCircle2, 
   ArrowRight,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Inbox,
+  Mail,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import { useRouter } from '../router';
 import { useToast } from '../components/Toast';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { fetchProjectInquiries, SupabaseInquiry } from '../../supabaseClient';
 
 export const DashboardOverview: React.FC = () => {
   const { 
@@ -33,6 +38,14 @@ export const DashboardOverview: React.FC = () => {
 
   const [isPublishing, setIsPublishing] = useState(false);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const [inquiries, setInquiries] = useState<SupabaseInquiry[]>([]);
+  const [showInquiriesList, setShowInquiriesList] = useState(false);
+
+  useEffect(() => {
+    fetchProjectInquiries().then((items) => {
+      setInquiries(items);
+    });
+  }, []);
 
   const handlePublish = async () => {
     try {
@@ -131,7 +144,7 @@ export const DashboardOverview: React.FC = () => {
         </div>
 
         {/* Status Metrics Line */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
               Website Status
@@ -159,7 +172,80 @@ export const DashboardOverview: React.FC = () => {
               All public visitors currently see this release.
             </p>
           </div>
+
+          <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                Supabase Leads
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigate('/admin/leads')}
+                  className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 underline cursor-pointer"
+                >
+                  Manage
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowInquiriesList(!showInquiriesList)}
+                  className="text-[11px] font-bold text-slate-600 hover:text-slate-800 flex items-center gap-0.5 cursor-pointer"
+                >
+                  <span>{showInquiriesList ? 'Hide' : 'Quick View'}</span>
+                  {showInquiriesList ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                </button>
+              </div>
+            </div>
+            <div className="text-base font-black text-emerald-800 flex items-center gap-2">
+              <Inbox className="w-4 h-4 text-emerald-600" />
+              <span>{inquiries.length} {inquiries.length === 1 ? 'Inquiry' : 'Inquiries'}</span>
+            </div>
+            <p className="text-xs text-slate-600 mt-1 font-medium">
+              Client proposal requests submitted from website.
+            </p>
+          </div>
         </div>
+
+        {/* Expandable Inquiries Drawer */}
+        {showInquiriesList && (
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Recent Client Proposals &amp; Inquiries</span>
+              </h3>
+              <span className="text-[11px] text-slate-500 font-medium">Connected to Supabase Database</span>
+            </div>
+
+            {inquiries.length === 0 ? (
+              <p className="text-xs text-slate-500 py-3 text-center">
+                No inquiries received yet. When visitors fill the "Request a Proposal" form, submissions will appear here.
+              </p>
+            ) : (
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {inquiries.map((inq, idx) => (
+                  <div key={inq.id || idx} className="p-3 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-slate-900">{inq.name} ({inq.email})</span>
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px]">
+                        {inq.package_tier}
+                      </span>
+                    </div>
+                    {inq.store_url && (
+                      <div className="text-slate-500 font-mono text-[11px]">Store: {inq.store_url}</div>
+                    )}
+                    {inq.message && (
+                      <p className="text-slate-700 font-medium italic mt-1 bg-slate-50 p-2 rounded-lg">"{inq.message}"</p>
+                    )}
+                    <div className="text-[10px] text-slate-400">
+                      {inq.created_at ? new Date(inq.created_at).toLocaleString() : 'Just now'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Draft Actions Bar */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">

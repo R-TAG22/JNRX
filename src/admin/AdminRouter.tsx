@@ -14,6 +14,7 @@ import { GlobalContentEditor } from './pages/GlobalContentEditor';
 import { MediaLibrary } from './pages/MediaLibrary';
 import { SettingsPage } from './pages/SettingsPage';
 import { PublishingPage } from './pages/PublishingPage';
+import { InquiriesPage } from './pages/InquiriesPage';
 import { ThemeEditor } from './pages/ThemeEditor';
 import { AdminThemeProvider } from './context/AdminThemeContext';
 
@@ -32,8 +33,8 @@ export const AdminRouter: React.FC = () => {
     );
   }
 
-  // If not logged in, render login screen
-  if (!currentUser || currentPath === '/admin/login') {
+  // If not logged in, or explicitly on login/signup routes, render login/signup screen
+  if (!currentUser || currentPath === '/admin/login' || currentPath === '/admin/signup') {
     return (
       <AdminThemeProvider>
         <AdminLogin />
@@ -53,10 +54,14 @@ export const AdminRouter: React.FC = () => {
   // Render the matching editor within the AdminLayout shell
   const renderCurrentPage = () => {
     switch (currentPath) {
-      // 1. Dashboard
+      // 1. Dashboard & Leads
       case '/admin':
       case '/admin/dashboard':
         return <DashboardOverview />;
+
+      case '/admin/inquiries':
+      case '/admin/leads':
+        return <InquiriesPage />;
 
       // 2. Website Pages
       case '/admin/pages/home':
