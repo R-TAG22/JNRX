@@ -4,6 +4,27 @@
  */
 import type React from 'react';
 
+export const DEFAULT_BRAND_LOGO = 'JNR-Logo.jpg';
+export const JAMEZ_PROFILE_PHOTO = 'images/team/Jamez - Profile pic.jpg';
+
+const LEGACY_LOGO_PATHS = new Set([
+  '/LOGO.png',
+  'LOGO.png',
+  '/JNRX-Logo.jpeg',
+  'JNRX-Logo.jpeg',
+  '/JNRX - Logo.2.jpg',
+  'JNRX - Logo.2.jpg',
+  '/JNRX%20-%20Logo.2.jpg',
+  'JNRX%20-%20Logo.2.jpg',
+]);
+
+const LEGACY_JAMEZ_PATTERNS = ['JAMEZ M.jpg', 'jamez-m.jpg'];
+
+export const getBaseUrl = (): string => {
+  const base = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || '/';
+  return base.endsWith('/') ? base : `${base}/`;
+};
+
 /**
  * Safely prepends import.meta.env.BASE_URL to any asset path referencing the public directory.
  * Prevents double slashes and preserves external URLs (http/https/data:).
@@ -13,13 +34,44 @@ export const assetUrl = (path: string): string => {
   if (/^(?:https?:)?\/\//i.test(path) || path.startsWith('data:') || path.startsWith('blob:')) {
     return path;
   }
-  const base = import.meta.env.BASE_URL || '/';
-  const prefix = base.endsWith('/') ? base : `${base}/`;
+  const prefix = getBaseUrl();
   if (prefix !== '/' && path.startsWith(prefix)) {
     return path;
   }
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${prefix}${cleanPath}`;
+};
+
+export const isLegacyLogoPath = (logoUrl?: string): boolean => {
+  if (!logoUrl) return true;
+  const trimmed = logoUrl.trim();
+  if (!trimmed || LEGACY_LOGO_PATHS.has(trimmed)) return true;
+  return (
+    trimmed.endsWith('/JNRX-Logo.jpeg') ||
+    trimmed.endsWith('/LOGO.png') ||
+    trimmed.endsWith('/JNRX - Logo.2.jpg') ||
+    trimmed.endsWith('/JNRX%20-%20Logo.2.jpg')
+  );
+};
+
+export const resolveBrandLogoUrl = (logoUrl?: string): string => {
+  if (isLegacyLogoPath(logoUrl)) {
+    return assetUrl(DEFAULT_BRAND_LOGO);
+  }
+  return assetUrl(logoUrl!);
+};
+
+export const isLegacyJamezImage = (imageUrl?: string): boolean => {
+  if (!imageUrl) return true;
+  return LEGACY_JAMEZ_PATTERNS.some((pattern) => imageUrl.includes(pattern));
+};
+
+export const resolveTeamMemberImage = (memberId: string, imageUrl?: string, memberName?: string): string => {
+  const isJamez = memberId === 'jamez-m' || (memberName || '').toLowerCase().includes('jamez');
+  if (isJamez && isLegacyJamezImage(imageUrl)) {
+    return assetUrl(JAMEZ_PROFILE_PHOTO);
+  }
+  return imageUrl ? assetUrl(imageUrl) : '';
 };
 
 export const FALLBACK_STORE_IMAGE = 

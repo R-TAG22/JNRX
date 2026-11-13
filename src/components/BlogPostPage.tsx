@@ -187,7 +187,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ postId, onHireClick 
               <img
                 src={post.author.avatar}
                 alt={post.author.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-[#064E3B]/20 shadow-xs"
+                className="w-12 h-12 rounded-full object-cover object-top border-2 border-[#064E3B]/20 shadow-xs"
                 onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
               <div>
@@ -348,7 +348,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ postId, onHireClick 
           <img
             src={post.author.avatar}
             alt={post.author.name}
-            className="w-16 h-16 rounded-full object-cover border-2 border-[#064E3B]/20 shrink-0"
+            className="w-16 h-16 rounded-full object-cover object-top border-2 border-[#064E3B]/20 shrink-0"
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
           <div className="flex-1">

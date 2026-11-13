@@ -46,7 +46,7 @@ function PublicWebsite() {
       : 'https://r-tag22.github.io/JNRX';
 
     const normalizedBase = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') + '/';
-    const logoUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}JNRX-Logo.jpeg`;
+    const logoUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}JNR-Logo.jpg`;
     const siteUrl = `${origin}${normalizedBase.startsWith('/') ? '' : '/'}${normalizedBase}`;
 
     // Organization Schema

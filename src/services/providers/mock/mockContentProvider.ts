@@ -13,9 +13,173 @@ import {
   IFAQService,
 } from '../../cms/types';
 import { INITIAL_WEBSITE_CONTENT } from './initialData';
+import {
+  DEFAULT_BRAND_LOGO,
+  JAMEZ_PROFILE_PHOTO,
+  assetUrl,
+  isLegacyLogoPath,
+  isLegacyJamezImage,
+} from '../../../utils/imageFallbacks';
 
 const DRAFT_STORAGE_KEY = 'jnrx_cms_draft_v6';
 const PUBLISHED_STORAGE_KEY = 'jnrx_cms_published_v6';
+
+export function migrateWebsiteContent(parsed: any): WebsiteContent {
+  if (!parsed || typeof parsed !== 'object') {
+    return JSON.parse(JSON.stringify(INITIAL_WEBSITE_CONTENT));
+  }
+
+  const copy = JSON.parse(JSON.stringify(parsed));
+
+  const rawCustomSections = Array.isArray(copy.customSections)
+    ? copy.customSections
+    : INITIAL_WEBSITE_CONTENT.customSections;
+  const cleanedCustomSections = rawCustomSections.filter(
+    (s: any) =>
+      s.id !== 'section-packages-enterprise' &&
+      s.badge !== 'CUSTOM SOLUTIONS' &&
+      s.id !== 'section-about-standards' &&
+      s.badge !== 'DEV TEAM PROMISE'
+  );
+
+  // Migrate legacy CommerceForge branding & legacy image paths to JNRX defaults
+  if (copy.header) {
+    if (copy.header.brandName === 'Commerce') copy.header.brandName = 'JNR';
+    if (copy.header.brandHighlight === 'Forge') copy.header.brandHighlight = 'X';
+    if (isLegacyLogoPath(copy.header.logoUrl)) {
+      copy.header.logoUrl = assetUrl(DEFAULT_BRAND_LOGO);
+    }
+  }
+
+  if (copy.footer) {
+    if (copy.footer.brandName === 'Commerce') copy.footer.brandName = 'JNR';
+    if (copy.footer.brandHighlight === 'Forge') copy.footer.brandHighlight = 'X';
+    if (!copy.footer.contactEmail || copy.footer.contactEmail.includes('commerceforge')) {
+      copy.footer.contactEmail = 'contact@jnrx.agency';
+    }
+    if (!copy.footer.copyrightText || copy.footer.copyrightText.includes('CommerceForge')) {
+      copy.footer.copyrightText = 'JNRX Dev Team. All rights reserved. Transparent web design for local businesses.';
+    }
+    if (Array.isArray(copy.footer.columns)) {
+      const quickLinksFromHeader =
+        Array.isArray(copy.header?.navItems) && copy.header.navItems.length > 0
+          ? [...copy.header.navItems]
+              .filter((item: any) => item.visible !== false)
+              .sort((a: any, b: any) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+              .map((item: any) => {
+                const rawLabel = String(item.label || '').trim();
+                const formattedLabel =
+                  rawLabel.toUpperCase() === 'FAQ' || rawLabel.toUpperCase() === 'FAQS'
+                    ? rawLabel.toUpperCase()
+                    : rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1).toLowerCase();
+                return {
+                  id: `ql-${item.id || rawLabel.toLowerCase()}`,
+                  label: formattedLabel,
+                  url: item.url || '/',
+                };
+              })
+          : INITIAL_WEBSITE_CONTENT.footer.columns[0].links;
+
+      copy.footer.columns = copy.footer.columns
+        .filter((col: any) => {
+          const titleLower = String(col?.title || '').toLowerCase().trim();
+          return titleLower !== 'selected work' && titleLower !== 'information';
+        })
+        .map((col: any) => {
+          const titleLower = String(col?.title || '').toLowerCase();
+          const hasLegacyPackageLinks =
+            Array.isArray(col?.links) &&
+            col.links.some((l: any) =>
+              /basic rebuild|standard website|premium e-commerce|student & capstone/i.test(String(l?.label || ''))
+            );
+          if (titleLower.includes('package') || titleLower === 'quick links' || hasLegacyPackageLinks) {
+            return {
+              ...col,
+              title: 'Quick Links',
+              links: quickLinksFromHeader,
+            };
+          }
+          return col;
+        });
+
+      if (copy.footer.columns.length === 0) {
+        copy.footer.columns = [
+          {
+            id: 'col-1',
+            title: 'Quick Links',
+            links: quickLinksFromHeader,
+          },
+        ];
+      }
+    }
+  }
+
+  const migratedTeamMembers =
+    Array.isArray(copy.teamMembers) && copy.teamMembers.length > 0
+      ? copy.teamMembers.map((member: any) => {
+          const isJamez = member?.id === 'jamez-m' || (member?.name || '').toLowerCase().includes('jamez');
+          if (isJamez && isLegacyJamezImage(member?.image)) {
+            return {
+              ...member,
+              image: assetUrl(JAMEZ_PROFILE_PHOTO),
+            };
+          }
+          return member;
+        })
+      : INITIAL_WEBSITE_CONTENT.teamMembers;
+
+  return {
+    ...INITIAL_WEBSITE_CONTENT,
+    ...copy,
+    header: { ...INITIAL_WEBSITE_CONTENT.header, ...(copy.header || {}) },
+    hero: { ...INITIAL_WEBSITE_CONTENT.hero, ...(copy.hero || {}) },
+    statistics: { ...INITIAL_WEBSITE_CONTENT.statistics, ...(copy.statistics || {}) },
+    portfolio: Array.isArray(copy.portfolio) && copy.portfolio.length > 0 ? copy.portfolio : INITIAL_WEBSITE_CONTENT.portfolio,
+    packages: { ...INITIAL_WEBSITE_CONTENT.packages, ...(copy.packages || {}) },
+    comparison: { ...INITIAL_WEBSITE_CONTENT.comparison, ...(copy.comparison || {}) },
+    process: { ...INITIAL_WEBSITE_CONTENT.process, ...(copy.process || {}) },
+    brand: { ...INITIAL_WEBSITE_CONTENT.brand, ...(copy.brand || {}) },
+    faq: { ...INITIAL_WEBSITE_CONTENT.faq, ...(copy.faq || {}) },
+    cta: { ...INITIAL_WEBSITE_CONTENT.cta, ...(copy.cta || {}) },
+    footer: { ...INITIAL_WEBSITE_CONTENT.footer, ...(copy.footer || {}) },
+    customSections: cleanedCustomSections,
+    pageSections: (() => {
+      const rawSections = copy.pageSections || INITIAL_WEBSITE_CONTENT.pageSections;
+      if (!rawSections?.home) return rawSections;
+      let seenKnowledge = false;
+      const cleanedHome = rawSections.home.filter((sec: any) => {
+        const isKnowledge =
+          sec.id === 'blog-faq' ||
+          sec.type === 'blog-faq' ||
+          sec.id === 'faq' ||
+          sec.type === 'faq' ||
+          sec.id === 'blog' ||
+          sec.type === 'blog';
+        if (isKnowledge) {
+          if (seenKnowledge) return false;
+          seenKnowledge = true;
+          return true;
+        }
+        return true;
+      });
+      return { ...rawSections, home: cleanedHome };
+    })(),
+    teamMembers: migratedTeamMembers,
+    promiseSection: copy.promiseSection
+      ? { ...INITIAL_WEBSITE_CONTENT.promiseSection, ...copy.promiseSection }
+      : INITIAL_WEBSITE_CONTENT.promiseSection,
+    clientLogos:
+      Array.isArray(copy.clientLogos) && copy.clientLogos.length > 0
+        ? copy.clientLogos
+        : INITIAL_WEBSITE_CONTENT.clientLogos,
+    packagesTerms: copy.packagesTerms
+      ? { ...INITIAL_WEBSITE_CONTENT.packagesTerms, ...copy.packagesTerms }
+      : INITIAL_WEBSITE_CONTENT.packagesTerms,
+    faqsPageConfig: copy.faqsPageConfig
+      ? { ...INITIAL_WEBSITE_CONTENT.faqsPageConfig, ...copy.faqsPageConfig }
+      : INITIAL_WEBSITE_CONTENT.faqsPageConfig,
+  };
+}
 
 export class MockContentProvider implements IContentService, IPortfolioService, IPackageService, IProcessService, IFAQService {
   private draftContent: WebsiteContent;
@@ -29,65 +193,14 @@ export class MockContentProvider implements IContentService, IPortfolioService, 
   private loadFromStorage(key: string): WebsiteContent | null {
     if (typeof window === 'undefined') return null;
     try {
-      const saved = localStorage.getItem(key) || (key.includes('published') ? localStorage.getItem('commerceforge_cms_published_v5') : localStorage.getItem('commerceforge_cms_draft_v5'));
+      const saved =
+        localStorage.getItem(key) ||
+        (key.includes('published')
+          ? localStorage.getItem('commerceforge_cms_published_v5')
+          : localStorage.getItem('commerceforge_cms_draft_v5'));
       if (!saved) return null;
       const parsed = JSON.parse(saved);
-      const rawCustomSections = Array.isArray(parsed.customSections) ? parsed.customSections : INITIAL_WEBSITE_CONTENT.customSections;
-      const cleanedCustomSections = rawCustomSections.filter(
-        (s: any) =>
-          s.id !== 'section-packages-enterprise' &&
-          s.badge !== 'CUSTOM SOLUTIONS' &&
-          s.id !== 'section-about-standards' &&
-          s.badge !== 'DEV TEAM PROMISE'
-      );
-      // Migrate legacy CommerceForge branding to JNRX
-      if (parsed.header) {
-        if (parsed.header.brandName === 'Commerce') parsed.header.brandName = 'JNR';
-        if (parsed.header.brandHighlight === 'Forge') parsed.header.brandHighlight = 'X';
-        if (!parsed.header.logoUrl || parsed.header.logoUrl === '/LOGO.png') parsed.header.logoUrl = '/JNRX-Logo.jpeg';
-      }
-      if (parsed.footer) {
-        if (parsed.footer.brandName === 'Commerce') parsed.footer.brandName = 'JNR';
-        if (parsed.footer.brandHighlight === 'Forge') parsed.footer.brandHighlight = 'X';
-        if (!parsed.footer.contactEmail || parsed.footer.contactEmail.includes('commerceforge')) parsed.footer.contactEmail = 'contact@jnrx.agency';
-        if (!parsed.footer.copyrightText || parsed.footer.copyrightText.includes('CommerceForge')) parsed.footer.copyrightText = 'JNRX Dev Team. All rights reserved. Transparent web design for local businesses.';
-      }
-      return {
-        ...INITIAL_WEBSITE_CONTENT,
-        ...parsed,
-        header: { ...INITIAL_WEBSITE_CONTENT.header, ...(parsed.header || {}) },
-        hero: { ...INITIAL_WEBSITE_CONTENT.hero, ...(parsed.hero || {}) },
-        statistics: { ...INITIAL_WEBSITE_CONTENT.statistics, ...(parsed.statistics || {}) },
-        portfolio: Array.isArray(parsed.portfolio) && parsed.portfolio.length > 0 ? parsed.portfolio : INITIAL_WEBSITE_CONTENT.portfolio,
-        packages: { ...INITIAL_WEBSITE_CONTENT.packages, ...(parsed.packages || {}) },
-        comparison: { ...INITIAL_WEBSITE_CONTENT.comparison, ...(parsed.comparison || {}) },
-        process: { ...INITIAL_WEBSITE_CONTENT.process, ...(parsed.process || {}) },
-        brand: { ...INITIAL_WEBSITE_CONTENT.brand, ...(parsed.brand || {}) },
-        faq: { ...INITIAL_WEBSITE_CONTENT.faq, ...(parsed.faq || {}) },
-        cta: { ...INITIAL_WEBSITE_CONTENT.cta, ...(parsed.cta || {}) },
-        footer: { ...INITIAL_WEBSITE_CONTENT.footer, ...(parsed.footer || {}) },
-        customSections: cleanedCustomSections,
-        pageSections: (() => {
-          const rawSections = parsed.pageSections || INITIAL_WEBSITE_CONTENT.pageSections;
-          if (!rawSections?.home) return rawSections;
-          let seenKnowledge = false;
-          const cleanedHome = rawSections.home.filter((sec: any) => {
-            const isKnowledge = sec.id === 'blog-faq' || sec.type === 'blog-faq' || sec.id === 'faq' || sec.type === 'faq' || sec.id === 'blog' || sec.type === 'blog';
-            if (isKnowledge) {
-              if (seenKnowledge) return false;
-              seenKnowledge = true;
-              return true;
-            }
-            return true;
-          });
-          return { ...rawSections, home: cleanedHome };
-        })(),
-        teamMembers: Array.isArray(parsed.teamMembers) && parsed.teamMembers.length > 0 ? parsed.teamMembers : INITIAL_WEBSITE_CONTENT.teamMembers,
-        promiseSection: parsed.promiseSection ? { ...INITIAL_WEBSITE_CONTENT.promiseSection, ...parsed.promiseSection } : INITIAL_WEBSITE_CONTENT.promiseSection,
-        clientLogos: Array.isArray(parsed.clientLogos) && parsed.clientLogos.length > 0 ? parsed.clientLogos : INITIAL_WEBSITE_CONTENT.clientLogos,
-        packagesTerms: parsed.packagesTerms ? { ...INITIAL_WEBSITE_CONTENT.packagesTerms, ...parsed.packagesTerms } : INITIAL_WEBSITE_CONTENT.packagesTerms,
-        faqsPageConfig: parsed.faqsPageConfig ? { ...INITIAL_WEBSITE_CONTENT.faqsPageConfig, ...parsed.faqsPageConfig } : INITIAL_WEBSITE_CONTENT.faqsPageConfig,
-      };
+      return migrateWebsiteContent(parsed);
     } catch {
       return null;
     }

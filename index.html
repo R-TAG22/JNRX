@@ -3,6 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var ownDesc = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (!ownDesc) {
+            var protoDesc = typeof Window !== 'undefined' && Window.prototype
+              ? Object.getOwnPropertyDescriptor(Window.prototype, 'fetch')
+              : null;
+            if (protoDesc && protoDesc.get && !protoDesc.set) {
+              var protoFetch = window.fetch;
+              var currentFetch = typeof protoFetch === 'function' ? protoFetch.bind(window) : protoFetch;
+              Object.defineProperty(window, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function () { return currentFetch; },
+                set: function (fn) { currentFetch = fn; }
+              });
+            }
+          } else if (ownDesc.get && !ownDesc.set && ownDesc.configurable) {
+            var ownFetch = window.fetch;
+            var currentOwnFetch = typeof ownFetch === 'function' ? ownFetch.bind(window) : ownFetch;
+            Object.defineProperty(window, 'fetch', {
+              configurable: true,
+              enumerable: ownDesc.enumerable,
+              get: function () { return currentOwnFetch; },
+              set: function (fn) { currentOwnFetch = fn; }
+            });
+          }
+        } catch (_) {}
+      })();
+    </script>
     <title>CommerceForge — Web Performance Dev Team</title>
     <meta name="description" content="We rebuild slow, outdated sites into high-speed sales engines. Handcrafted, mobile-first and delivered in 7 days." />
 
@@ -11,7 +42,7 @@
     <meta property="og:site_name" content="CommerceForge" />
     <meta property="og:title" content="CommerceForge — Web Performance Dev Team" />
     <meta property="og:description" content="We rebuild slow, outdated sites into high-speed sales engines. Handcrafted, mobile-first and delivered in 7 days." />
-    <meta property="og:image" content="%BASE_URL%JNRX-Logo.jpeg" />
+    <meta property="og:image" content="%BASE_URL%JNR-Logo.jpg" />
     <meta property="og:image:width" content="800" />
     <meta property="og:image:height" content="800" />
     <meta property="og:image:alt" content="CommerceForge" />
@@ -21,8 +52,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CommerceForge — Web Performance Dev Team" />
     <meta name="twitter:description" content="We rebuild slow, outdated sites into high-speed sales engines. Handcrafted, mobile-first and delivered in 7 days." />
-    <meta name="twitter:image" content="%BASE_URL%JNRX-Logo.jpeg" />
-    <link rel="icon" type="image/jpeg" href="%BASE_URL%JNRX-Logo.jpeg" />
+    <meta name="twitter:image" content="%BASE_URL%JNR-Logo.jpg" />
+    <link rel="icon" type="image/jpeg" href="%BASE_URL%JNR-Logo.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">

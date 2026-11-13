@@ -153,9 +153,9 @@ export const AdminLogin: React.FC = () => {
       <div className="w-full max-w-md relative z-10 my-12">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-24 h-24 mb-2">
+          <div className="inline-flex items-center justify-center w-20 h-20 mb-3 bg-transparent">
             <img
-              src="/JNRX-Logo.jpeg"
+              src={`${import.meta.env.BASE_URL}JNR-Logo.jpg`}
               alt="JNRX Logo"
               className="w-full h-full object-contain mix-blend-multiply"
               onError={(e) => {

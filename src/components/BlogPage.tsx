@@ -248,7 +248,7 @@ export const BLOG_POSTS_DATA: BlogPostItem[] = [
     author: {
       name: 'Jamez M.',
       role: 'Co-Founder & Infrastructure',
-      avatar: `${import.meta.env.BASE_URL}images/team/JAMEZ M.jpg`,
+      avatar: `${import.meta.env.BASE_URL}images/team/Jamez - Profile pic.jpg`,
     },
     metrics: [
       { label: 'Page Speed', value: '8.4s → 0.5s' },
@@ -505,7 +505,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onHireClick }) => {
                         <img
                           src={featuredArticle.author.avatar}
                           alt={featuredArticle.author.name}
-                          className="w-10 h-10 rounded-full object-cover border border-[#064E3B]/20"
+                          className="w-10 h-10 rounded-full object-cover object-top border border-[#064E3B]/20"
                           onError={(e) => { e.currentTarget.style.display = 'none'; }}
                         />
                         <div className="flex flex-col">
@@ -614,7 +614,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onHireClick }) => {
                         <img
                           src={article.author.avatar}
                           alt={article.author.name}
-                          className="w-7 h-7 rounded-full object-cover border border-[#064E3B]/20"
+                          className="w-7 h-7 rounded-full object-cover object-top border border-[#064E3B]/20"
                           onError={(e) => { e.currentTarget.style.display = 'none'; }}
                         />
                         <span className="text-[11px] font-bold text-[#064E3B]">{article.author.name}</span>
@@ -706,7 +706,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onHireClick }) => {
                   <img
                     src={readingArticle.author.avatar}
                     alt={readingArticle.author.name}
-                    className="w-10 h-10 rounded-full object-cover border border-[#064E3B]/20 shrink-0"
+                    className="w-10 h-10 rounded-full object-cover object-top border border-[#064E3B]/20 shrink-0"
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
                   <div>

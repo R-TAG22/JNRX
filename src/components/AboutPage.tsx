@@ -4,7 +4,7 @@ import { AboutSection } from './AboutSection';
 import { CommerceForgePromise } from './CommerceForgePromise';
 import { usePublicTheme } from '../context/PublicThemeContext';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { assetUrl } from '../utils/imageFallbacks';
+import { assetUrl, JAMEZ_PROFILE_PHOTO, resolveTeamMemberImage } from '../utils/imageFallbacks';
 import { useCMS } from '../context/CMSContext';
 
 interface AboutPageProps {
@@ -57,7 +57,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     isFounder: false,
     specializations: ['Web Developer', 'E-commerce Operation'],
     bio: 'Co-leads backend integrations, API pipelines, scalable storefront hosting, and merchant technical support.',
-    image: assetUrl('images/team/JAMEZ M.jpg'),
+    image: `${import.meta.env.BASE_URL}images/team/Jamez - Profile pic.jpg`,
   },
 ];
 
@@ -141,16 +141,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onHireClick, onRequestReve
                     : 'bg-gradient-to-br from-[#EAF3E8] via-[#F4F8F3] to-[#DFEADF] border-[#1E3A2B]/10 group-hover:border-[#B7E84B]/60'
                 }`}>
                   <img
-                    src={member.image}
+                    src={resolveTeamMemberImage(member.id, member.image, member.name)}
                     alt={member.name}
                     onError={(e) => {
                       const target = e.currentTarget;
-                      const fallback = assetUrl(`images/team/${member.id}.jpg`);
+                      const isJamez = member.id === 'jamez-m' || member.name.toLowerCase().includes('jamez');
+                      const fallback = assetUrl(isJamez ? JAMEZ_PROFILE_PHOTO : `images/team/${member.id}.jpg`);
                       if (target.src !== fallback) {
                         target.src = fallback;
                       }
                     }}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-cover object-top"
                   />
 
                   {/* Founder / Co-Founder Badge on Photo Frame */}

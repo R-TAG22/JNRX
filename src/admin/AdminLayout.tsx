@@ -168,9 +168,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         {/* Brand / Logo */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-slate-200 bg-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-12 h-12 flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 flex items-center justify-center shrink-0 bg-transparent">
               <img
-                src="/JNRX-Logo.jpeg"
+                src={`${import.meta.env.BASE_URL}JNR-Logo.jpg`}
                 alt="JNRX"
                 className="w-full h-full object-contain mix-blend-multiply"
                 onError={(e) => {

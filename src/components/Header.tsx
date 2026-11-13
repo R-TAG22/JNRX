@@ -3,6 +3,7 @@ import { NavItem } from '../types';
 import { CommerceForgeLogo } from './CommerceForgeLogo';
 import { useCMS } from '../context/CMSContext';
 import { useRouter } from '../admin/router';
+import { resolveBrandLogoUrl } from '../utils/imageFallbacks';
 
 interface HeaderProps {
   activeNav?: NavItem;
@@ -139,13 +140,9 @@ export const Header: React.FC<HeaderProps> = ({
               style={{ WebkitTapHighlightColor: 'transparent' }}
               aria-label="JNRX Home"
             >
-              <div className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 shrink-0 bg-transparent">
+              <div className="relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 shrink-0 bg-transparent">
                 <img
-                  src={headerData?.logoUrl && headerData.logoUrl !== '/LOGO.png'
-                    ? (headerData.logoUrl.startsWith('http') || headerData.logoUrl.startsWith(import.meta.env.BASE_URL)
-                        ? headerData.logoUrl
-                        : `${import.meta.env.BASE_URL}${headerData.logoUrl.replace(/^\//, '')}`)
-                    : `${import.meta.env.BASE_URL}JNRX-Logo.jpeg`}
+                  src={resolveBrandLogoUrl(headerData?.logoUrl)}
                   alt={`${brandName}${brandHighlight} Logo`}
                   className="w-full h-full object-contain mix-blend-multiply select-none pointer-events-none"
                   style={{ WebkitTapHighlightColor: 'transparent' }}

@@ -20,6 +20,7 @@ import { useCMS } from '../../context/CMSContext';
 import { useToast } from '../components/Toast';
 import { MediaPickerModal } from '../components/MediaPickerModal';
 import { TeamMemberItem, BrandValueItem } from '../../types/cms';
+import { assetUrl, resolveTeamMemberImage } from '../../utils/imageFallbacks';
 
 const DEFAULT_ACCELERATION_SERVICES: BrandValueItem[] = [
   {
@@ -744,11 +745,11 @@ export const AboutEditor: React.FC = () => {
                 <div className="flex items-start gap-4">
                   <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
                     <img 
-                      src={member.image} 
+                      src={resolveTeamMemberImage(member.id, member.image, member.name)} 
                       alt={member.name} 
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover object-top" 
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = `${import.meta.env.BASE_URL}images/team/RUSSELL T.jpg`;
+                        (e.target as HTMLImageElement).src = assetUrl('images/team/RUSSELL T..jpg');
                       }}
                     />
                   </div>

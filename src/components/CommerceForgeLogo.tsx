@@ -11,9 +11,9 @@ export const CommerceForgeLogo: React.FC<LogoProps> = ({ className = "w-full h-f
   if (!imgError) {
     return (
       <img
-        src="/JNRX-Logo.jpeg"
+        src={`${import.meta.env.BASE_URL}JNR-Logo.jpg`}
         alt="JNRX Logo"
-        className={`${className} object-contain block`}
+        className={`${className} object-contain rounded-lg block`}
         style={size ? { width: size, height: size } : undefined}
         onError={() => setImgError(true)}
       />

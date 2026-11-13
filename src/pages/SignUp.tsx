@@ -41,9 +41,9 @@ export const SignUp: React.FC = () => {
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 mb-3">
+          <div className="inline-flex items-center justify-center w-20 h-20 mb-3 bg-transparent">
             <img
-              src="/JNRX-Logo.jpeg"
+              src={`${import.meta.env.BASE_URL}JNR-Logo.jpg`}
               alt="JNRX Logo"
               className="w-full h-full object-contain mix-blend-multiply"
               onError={(e) => {

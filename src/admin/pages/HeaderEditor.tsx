@@ -3,6 +3,7 @@ import { Plus, Trash2, ArrowUp, ArrowDown, Save, Compass, CheckCircle2, UploadCl
 import { useCMS } from '../../context/CMSContext';
 import { HeaderContent, NavigationItem } from '../../types/cms';
 import { useToast } from '../components/Toast';
+import { DEFAULT_BRAND_LOGO, resolveBrandLogoUrl } from '../../utils/imageFallbacks';
 
 export const HeaderEditor: React.FC = () => {
   const { draftContent, updateSection, publishSection } = useCMS();
@@ -159,21 +160,21 @@ export const HeaderEditor: React.FC = () => {
 
         <div className="pt-2">
           <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-2">
-            Brand Logo Path (e.g., /JNRX-Logo.jpeg)
+            Brand Logo Path (e.g., {`${import.meta.env.BASE_URL}${DEFAULT_BRAND_LOGO}`})
           </label>
           <div className="flex items-center gap-3">
             <input
               type="text"
-              value={header.logoUrl || '/JNRX-Logo.jpeg'}
+              value={header.logoUrl || `${import.meta.env.BASE_URL}${DEFAULT_BRAND_LOGO}`}
               onChange={(e) => setHeader({ ...header, logoUrl: e.target.value })}
-              placeholder="/JNRX-Logo.jpeg"
+              placeholder={`${import.meta.env.BASE_URL}${DEFAULT_BRAND_LOGO}`}
               className="flex-1 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#B7E84B]"
             />
-            <div className="w-16 h-16 flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 flex items-center justify-center shrink-0 rounded-xl bg-white p-1 overflow-hidden">
               <img
-                src={header.logoUrl || '/JNRX-Logo.jpeg'}
+                src={resolveBrandLogoUrl(header.logoUrl)}
                 alt="Logo preview"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain rounded-lg"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
                 }}

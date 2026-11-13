@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { useRouter } from '../admin/router';
 import { useCMS } from '../context/CMSContext';
+import { resolveBrandLogoUrl } from '../utils/imageFallbacks';
 
 interface FooterProps {
   onNavigate?: (id: string) => void;
@@ -35,56 +36,36 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
       return;
     }
     navigate(path.startsWith('/') ? path : `/${path}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const contactEmail = footerData?.contactEmail && !footerData.contactEmail.includes('commerceforge') ? footerData.contactEmail : 'contact@jnrx.agency';
   const copyrightText = footerData?.copyrightText && !footerData.copyrightText.includes('CommerceForge') ? footerData.copyrightText : 'Proudly crafted by JNRX Dev Team. High-performance eCommerce storefronts.';
 
   const defaultColumns = [
     {
       id: 'col-1',
-      title: 'REACH OUT',
+      title: 'Quick Links',
       links: [
-        { id: 'l-1', label: 'Contact Us', url: '/hire-us' },
-        { id: 'l-2', label: 'Request a Proposal', url: '/hire-us' },
-        { id: 'l-3', label: 'Email Us Directly', url: `mailto:${contactEmail}` },
-        { id: 'l-4', label: 'FAQs & Support', url: '/faqs' },
-      ],
-    },
-    {
-      id: 'col-2',
-      title: 'OUR SERVICES',
-      links: [
-        { id: 'l-5', label: 'Handcrafted E-Commerce', url: '/packages' },
-        { id: 'l-6', label: 'Performance & Speed Rebuilds', url: '/work' },
-        { id: 'l-7', label: 'Mobile-First Storefronts', url: '/packages' },
-        { id: 'l-8', label: 'Student & Capstone Systems', url: '/packages' },
-      ],
-    },
-    {
-      id: 'col-3',
-      title: 'EXPLORE',
-      links: [
-        { id: 'l-9', label: 'Client Work & Case Studies', url: '/work' },
-        { id: 'l-10', label: 'Why Rebuild? (Comparison)', url: '/#comparison' },
-        { id: 'l-11', label: 'Our 4-Step Process', url: '/#process' },
-        { id: 'l-blog', label: 'Articles & Insights (Blog)', url: '/blog' },
-        { id: 'l-12', label: 'About the Dev Team', url: '/about' },
-      ],
-    },
-    {
-      id: 'col-4',
-      title: 'JNRX',
-      links: [
-        { id: 'l-13', label: 'Basic Rebuild — $159', url: '/packages' },
-        { id: 'l-14', label: 'Standard Website — $260', url: '/packages' },
-        { id: 'l-15', label: 'Premium E-Commerce — $810', url: '/packages' },
-        { id: 'l-16', label: 'Student & Capstone — ₱4,000', url: '/packages' },
+        { id: 'ql-home', label: 'Home', url: '/' },
+        { id: 'ql-about', label: 'About', url: '/about' },
+        { id: 'ql-work', label: 'Work', url: '/work' },
+        { id: 'ql-packages', label: 'Packages', url: '/packages' },
+        { id: 'ql-blog', label: 'Blog', url: '/blog' },
+        { id: 'ql-faq', label: 'FAQ', url: '/faqs' },
       ],
     },
   ];
 
-  const columns = footerData?.columns && footerData.columns.length > 0 ? footerData.columns : defaultColumns;
+  const rawColumns = footerData?.columns && footerData.columns.length > 0 ? footerData.columns : defaultColumns;
+  const filteredColumns = rawColumns.filter((col) => {
+    const titleLower = String(col?.title || '').toLowerCase().trim();
+    return titleLower !== 'selected work' && titleLower !== 'information';
+  });
+  const columns = filteredColumns.length > 0 ? filteredColumns : defaultColumns;
+
+  const headerData = activeContent?.header;
+  const brandName = headerData?.brandName === 'Commerce' ? 'JNR' : (headerData?.brandName || 'JNR');
+  const brandHighlight = headerData?.brandHighlight === 'Forge' ? 'X' : (headerData?.brandHighlight !== undefined ? headerData.brandHighlight : 'X');
 
   return (
     <footer
@@ -93,44 +74,63 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
       aria-label="Site Footer"
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
-        {/* Dynamic Clean Columns Grid */}
-        <div className={`grid grid-cols-2 ${columns.length >= 4 ? 'md:grid-cols-4' : columns.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-8 sm:gap-10 lg:gap-12 pb-12 sm:pb-14`}>
-          {columns.map((col) => (
-            <div key={col.id || col.title}>
-              <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.16em] text-white mb-3.5 sm:mb-4 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B7E84B]" />
-                <span>{col.title}</span>
-              </h4>
-              <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px]">
-                {col.links.map((link) => (
-                  <li key={link.id || link.label}>
-                    {link.url.startsWith('mailto:') ? (
-                      <a
-                        href={link.url}
-                        className="text-emerald-100/70 hover:text-[#B7E84B] transition-colors cursor-pointer text-left block truncate"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (link.label.toLowerCase().includes('proposal') && onOpenInquiry) {
-                            onOpenInquiry();
-                          } else {
-                            handleNav(link.url);
-                          }
-                        }}
-                        className="text-emerald-100/70 hover:text-[#B7E84B] transition-colors cursor-pointer text-left block"
-                      >
-                        {link.label}
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
+        {/* Footer Body: Logo & Quick Links side by side */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-8 sm:gap-14 md:gap-16 pb-10 sm:pb-12">
+          {/* Left Side: Brand Logo sized to match Quick Links area */}
+          <button
+            type="button"
+            onClick={() => handleNav('/')}
+            className="group cursor-pointer focus:outline-none shrink-0"
+            aria-label="JNRX Home"
+          >
+            <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-2xl bg-white p-3 sm:p-4 overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.02]">
+              <img
+                src={resolveBrandLogoUrl(headerData?.logoUrl)}
+                alt={`${brandName}${brandHighlight} Logo`}
+                className="w-full h-full object-contain rounded-xl"
+              />
             </div>
-          ))}
+          </button>
+
+          {/* Quick Links near the logo */}
+          <div className="flex flex-wrap gap-10 sm:gap-14">
+            {columns.map((col) => (
+              <div key={col.id || col.title} className="min-w-[140px]">
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.16em] text-white mb-3.5 sm:mb-4 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B7E84B]" />
+                  <span>{col.title}</span>
+                </h4>
+                <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-[13px]">
+                  {col.links.map((link) => (
+                    <li key={link.id || link.label}>
+                      {link.url.startsWith('mailto:') ? (
+                        <a
+                          href={link.url}
+                          className="text-emerald-100/70 hover:text-[#B7E84B] transition-colors cursor-pointer text-left block truncate"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (link.label.toLowerCase().includes('proposal') && onOpenInquiry) {
+                              onOpenInquiry();
+                            } else {
+                              handleNav(link.url);
+                            }
+                          }}
+                          className="text-emerald-100/70 hover:text-[#B7E84B] transition-colors cursor-pointer text-left block"
+                        >
+                          {link.label}
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Minimalist Social Icons Row */}

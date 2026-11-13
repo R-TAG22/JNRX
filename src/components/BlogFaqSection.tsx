@@ -201,7 +201,7 @@ export const BlogFaqSection: React.FC<BlogFaqSectionProps> = ({ onCtaClick }) =>
                     <img
                       src={featuredArticles[0].author.avatar}
                       alt={featuredArticles[0].author.name}
-                      className="w-6 h-6 rounded-full object-cover border border-[#064E3B]/20"
+                      className="w-6 h-6 rounded-full object-cover object-top border border-[#064E3B]/20"
                       onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />
                     <span className="text-xs font-bold text-[#064E3B]">

@@ -12,7 +12,7 @@ import {
   IProcessService,
   IFAQService,
 } from '../../cms/types';
-import { mockContentProvider } from '../mock/mockContentProvider';
+import { mockContentProvider, migrateWebsiteContent } from '../mock/mockContentProvider';
 import { supabase } from '../../../supabaseClient';
 
 export class SupabaseContentProvider
@@ -35,9 +35,11 @@ export class SupabaseContentProvider
       if (!error && Array.isArray(data) && data.length > 0) {
         for (const row of data) {
           if (row.content_type === 'published' && row.data) {
-            localStorage.setItem('jnrx_cms_published_v6', JSON.stringify(row.data));
+            const migrated = migrateWebsiteContent(row.data);
+            localStorage.setItem('jnrx_cms_published_v6', JSON.stringify(migrated));
           } else if (row.content_type === 'draft' && row.data) {
-            localStorage.setItem('jnrx_cms_draft_v6', JSON.stringify(row.data));
+            const migrated = migrateWebsiteContent(row.data);
+            localStorage.setItem('jnrx_cms_draft_v6', JSON.stringify(migrated));
           }
         }
       }
@@ -56,7 +58,7 @@ export class SupabaseContentProvider
           .single();
 
         if (!error && data?.data) {
-          return data.data as WebsiteContent;
+          return migrateWebsiteContent(data.data);
         }
       } catch {
         // Table not ready, fallback to local
