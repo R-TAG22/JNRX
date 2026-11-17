@@ -64,8 +64,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
   const columns = filteredColumns.length > 0 ? filteredColumns : defaultColumns;
 
   const headerData = activeContent?.header;
-  const brandName = headerData?.brandName === 'Commerce' ? 'JNR' : (headerData?.brandName || 'JNR');
-  const brandHighlight = headerData?.brandHighlight === 'Forge' ? 'X' : (headerData?.brandHighlight !== undefined ? headerData.brandHighlight : 'X');
+  const rawBrandName = footerData?.brandName || headerData?.brandName;
+  const brandName = !rawBrandName || rawBrandName === 'Commerce' ? 'JNR' : rawBrandName;
+  const rawBrandHighlight = footerData?.brandHighlight !== undefined ? footerData.brandHighlight : headerData?.brandHighlight;
+  const brandHighlight = rawBrandHighlight === 'Forge' ? 'X' : (rawBrandHighlight ?? 'X');
+  const brandTagline = footerData?.brandTagline || headerData?.brandTagline || 'WEB PERFORMANCE DEV TEAM';
+  const brandDescription =
+    footerData?.description && !footerData.description.toLowerCase().includes('commerceforge')
+      ? footerData.description
+      : 'We rebuild outdated, sluggish websites into high-converting, mobile-first digital storefronts for growing local businesses and independent brands.';
+  const contactEmail =
+    footerData?.contactEmail && !footerData.contactEmail.toLowerCase().includes('commerceforge')
+      ? footerData.contactEmail
+      : 'contact@jnrx.agency';
 
   return (
     <footer
@@ -74,26 +85,58 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
       aria-label="Site Footer"
     >
       <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
-        {/* Footer Body: Logo & Quick Links side by side */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-8 sm:gap-14 md:gap-16 pb-10 sm:pb-12">
-          {/* Left Side: Brand Logo sized to match Quick Links area */}
-          <button
-            type="button"
-            onClick={() => handleNav('/')}
-            className="group cursor-pointer focus:outline-none shrink-0"
-            aria-label="JNRX Home"
-          >
-            <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-2xl bg-white p-3 sm:p-4 overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.02]">
-              <img
-                src={resolveBrandLogoUrl(headerData?.logoUrl)}
-                alt={`${brandName}${brandHighlight} Logo`}
-                className="w-full h-full object-contain rounded-xl"
-              />
-            </div>
-          </button>
+        {/* Footer Body: Logo + Short Description on the left, Quick Links on the right */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10 lg:gap-12 pb-10 sm:pb-12">
+          {/* Left Side: Brand Logo + Short Description on its right */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 max-w-2xl">
+            <button
+              type="button"
+              onClick={() => handleNav('/')}
+              className="group cursor-pointer focus:outline-none shrink-0"
+              aria-label="JNRX Home"
+            >
+              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl bg-white p-3 sm:p-4 overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.02]">
+                <img
+                  src={resolveBrandLogoUrl(headerData?.logoUrl)}
+                  alt={`${brandName}${brandHighlight} Logo`}
+                  className="w-full h-full object-contain rounded-xl"
+                />
+              </div>
+            </button>
 
-          {/* Quick Links near the logo */}
-          <div className="flex flex-wrap gap-10 sm:gap-14">
+            <div className="space-y-2.5 max-w-md">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
+                    {brandName}<span className="text-[#B7E84B]">{brandHighlight}</span>
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B7E84B] shadow-[0_0_8px_#B7E84B]" />
+                </div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-200/60 mt-0.5">
+                  {brandTagline}
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-[13px] text-emerald-100/75 leading-relaxed">
+                {brandDescription}
+              </p>
+
+              <div className="pt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-emerald-200/60">
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="hover:text-[#B7E84B] transition-colors"
+                >
+                  {contactEmail}
+                </a>
+                {footerData?.originBadge && (
+                  <span className="text-emerald-200/50">• {footerData.originBadge}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side: Quick Links */}
+          <div className="flex flex-wrap gap-10 sm:gap-14 md:ml-auto shrink-0">
             {columns.map((col) => (
               <div key={col.id || col.title} className="min-w-[140px]">
                 <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-[0.16em] text-white mb-3.5 sm:mb-4 flex items-center gap-1.5">
