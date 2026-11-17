@@ -4,7 +4,7 @@ import { usePublicTheme } from '../context/PublicThemeContext';
 import { FALLBACK_STORE_IMAGE, FALLBACK_MOBILE_IMAGE, handleImageError } from '../utils/imageFallbacks';
 
 const getWebpUrl = (url: string): string | null => {
-  if (url.endsWith('.jpg')) {
+  if (url.endsWith('.jpg') && url.includes('images/beforeandafter/')) {
     return url.replace('.jpg', '.webp');
   }
   return null;
@@ -63,10 +63,10 @@ const NICHES: NicheData[] = [
     icon: ShoppingBag,
     clientName: 'Palakol',
     category: 'Sporting Goods Store',
-    desktopBefore: `${import.meta.env.BASE_URL}images/beforeandafter/palakoldesktopbefore.jpg`,
-    desktopAfter: `${import.meta.env.BASE_URL}images/beforeandafter/palakoldesktopafter.jpg`,
-    mobileBefore: `${import.meta.env.BASE_URL}images/beforeandafter/palakolmobilebefore.jpg`,
-    mobileAfter: `${import.meta.env.BASE_URL}images/beforeandafter/palakolmobileafter.jpg`,
+    desktopBefore: `${import.meta.env.BASE_URL}assets/aistudio/image.png_db540282_d0116f7c.jpg`,
+    desktopAfter: `${import.meta.env.BASE_URL}assets/aistudio/image_d6c2b26f.png`,
+    mobileBefore: `${import.meta.env.BASE_URL}assets/aistudio/image.png_6b93bebd_3383ae50.jpg`,
+    mobileAfter: `${import.meta.env.BASE_URL}assets/aistudio/image_add5c587.png`,
     metrics: {
       pageSpeed: { before: 38, after: 99 },
       bounceRate: '-42%',
@@ -344,10 +344,10 @@ export const HeroMedia: React.FC = () => {
                   src={activeNicheData.mobileBefore} 
                   alt={`${activeNicheData.clientName} old site on mobile`} 
                   onError={(e) => handleImageError(e, FALLBACK_MOBILE_IMAGE)}
-                  width="411" 
-                  height="896" 
-                  className="block w-full object-cover object-top select-none pointer-events-none"
-                  style={{ aspectRatio: '411 / 896' }}
+                  width={768}
+                  height={1199}
+                  className="block w-full object-contain object-center select-none pointer-events-none"
+                  style={{ aspectRatio: '768 / 1199' }}
                   draggable={false}
                   loading="eager"
                   decoding="async"
@@ -401,19 +401,19 @@ export const HeroMedia: React.FC = () => {
                     src={activeNicheData.desktopAfter} 
                     alt={`${activeNicheData.clientName} after rebuild`} 
                     onError={(e) => handleImageError(e, FALLBACK_STORE_IMAGE)}
-                    className="block w-full object-cover object-top select-none pointer-events-none"
-                    style={{ aspectRatio: '16 / 9' }}
+                    className="block w-full object-contain object-center select-none pointer-events-none"
+                    style={{ aspectRatio: '19 / 10' }}
                     draggable={false}
                     loading="eager"
                     decoding="async"
-                    width={1280}
-                    height={720}
+                    width={1890}
+                    height={891}
                   />
                 </picture>
 
                 {/* 2. Overlaid Clipped Layer: Legacy "Before" Desktop Screenshot with WebP */}
                 <div 
-                  className="absolute inset-0 select-none pointer-events-none"
+                  className={`absolute inset-0 select-none pointer-events-none ${isDark ? 'bg-[#0B0F17]' : 'bg-white'}`}
                   style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
                 >
                   <picture>
@@ -424,13 +424,13 @@ export const HeroMedia: React.FC = () => {
                       src={activeNicheData.desktopBefore} 
                       alt={`${activeNicheData.clientName} before rebuild`} 
                       onError={(e) => handleImageError(e, FALLBACK_STORE_IMAGE)}
-                      className="block w-full object-cover object-top select-none pointer-events-none"
-                      style={{ aspectRatio: '16 / 9' }}
+                      className="block w-full object-contain object-center select-none pointer-events-none"
+                      style={{ aspectRatio: '19 / 10' }}
                       draggable={false}
                       loading="eager"
                       decoding="async"
-                      width={1280}
-                      height={720}
+                      width={1376}
+                      height={708}
                     />
                   </picture>
                 </div>
@@ -530,10 +530,10 @@ export const HeroMedia: React.FC = () => {
           {/* ========================================================================= */}
           <figure 
             id="after-mobile-preview"
-            className="hidden xl:flex flex-col items-center shrink-0 w-[155px] 2xl:w-[182px] transition-all duration-300"
+            className="hidden xl:flex flex-col items-center shrink-0 w-[160px] 2xl:w-[188px] transition-all duration-300"
           >
             <div 
-              className={`w-full overflow-hidden rounded-[18px] border transition-transform duration-300 hover:-translate-y-1 ${
+              className={`w-full overflow-hidden rounded-[20px] border transition-transform duration-300 hover:-translate-y-1 ${
                 isDark
                   ? 'bg-[#0B0F17] border-white/10 shadow-[0_14px_36px_rgba(0,0,0,0.55)]'
                   : 'bg-white border-[#064E3B]/10 shadow-[0_14px_36px_rgba(6,78,59,0.12)]'
@@ -547,10 +547,10 @@ export const HeroMedia: React.FC = () => {
                   src={activeNicheData.mobileAfter} 
                   alt={`${activeNicheData.clientName} rebuilt on mobile`} 
                   onError={(e) => handleImageError(e, FALLBACK_MOBILE_IMAGE)}
-                  width="391" 
-                  height="857" 
-                  className="block w-full object-cover object-top select-none pointer-events-none"
-                  style={{ aspectRatio: '391 / 857' }}
+                  width={440}
+                  height={792}
+                  className="block w-full object-contain object-center select-none pointer-events-none"
+                  style={{ aspectRatio: '768 / 1199' }}
                   draggable={false}
                   loading="eager"
                   decoding="async"
@@ -580,8 +580,10 @@ export const HeroMedia: React.FC = () => {
                     src={activeNicheData.mobileBefore} 
                     alt={`${activeNicheData.clientName} old site on mobile`} 
                     onError={(e) => handleImageError(e, FALLBACK_MOBILE_IMAGE)}
-                    className="block w-full object-cover object-top"
-                    style={{ aspectRatio: '411 / 896' }}
+                    width={768}
+                    height={1199}
+                    className="block w-full object-contain object-center"
+                    style={{ aspectRatio: '768 / 1199' }}
                     loading="lazy"
                   />
                 </picture>
@@ -605,8 +607,10 @@ export const HeroMedia: React.FC = () => {
                     src={activeNicheData.mobileAfter} 
                     alt={`${activeNicheData.clientName} rebuilt on mobile`} 
                     onError={(e) => handleImageError(e, FALLBACK_MOBILE_IMAGE)}
-                    className="block w-full object-cover object-top"
-                    style={{ aspectRatio: '391 / 857' }}
+                    width={440}
+                    height={792}
+                    className="block w-full object-contain object-center"
+                    style={{ aspectRatio: '768 / 1199' }}
                     loading="lazy"
                   />
                 </picture>
