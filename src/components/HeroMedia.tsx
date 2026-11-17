@@ -59,10 +59,10 @@ const NICHES: NicheData[] = [
   {
     id: 'ecommerce',
     label: 'E-commerce',
-    badge: 'Pickleball & Sports Retail',
+    badge: '',
     icon: ShoppingBag,
-    clientName: 'Palakol',
-    category: 'Sporting Goods Store',
+    clientName: 'Naturezway',
+    category: 'Bamboo Paper Products & Compostable Tableware',
     desktopBefore: `${import.meta.env.BASE_URL}assets/aistudio/image.png_db540282_d0116f7c.jpg`,
     desktopAfter: `${import.meta.env.BASE_URL}assets/aistudio/image_d6c2b26f.png`,
     mobileBefore: `${import.meta.env.BASE_URL}assets/aistudio/image.png_6b93bebd_3383ae50.jpg`,
@@ -73,7 +73,7 @@ const NICHES: NicheData[] = [
       conversion: { label: 'Checkout Conversion', value: '+185%' },
       loadTime: { before: '4.8s', after: '0.6s' },
     },
-    highlight: 'Replaced multi-step sluggish theme with instant 2-tap checkout.',
+    highlight: 'Completely redesigned the website, enhancing its visuals, functionality, and user experience.',
   },
   {
     id: 'fitness',
@@ -267,7 +267,7 @@ export const HeroMedia: React.FC = () => {
           <div className="flex items-center gap-2.5">
             <span className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-[#B7E84B] shadow-[0_0_8px_#B7E84B]' : 'bg-[#059669]'}`} />
             <span className={`text-xs sm:text-sm font-black uppercase tracking-wider ${isDark ? 'text-white' : 'text-[#064E3B]'}`}>
-              {activeNicheData.clientName} · {activeNicheData.badge}
+              {activeNicheData.badge ? `${activeNicheData.clientName} · ${activeNicheData.badge}` : activeNicheData.clientName}
             </span>
           </div>
 
@@ -514,7 +514,7 @@ export const HeroMedia: React.FC = () => {
                 <span className={`block text-[13px] sm:text-[14px] font-bold tracking-tight leading-tight ${
                   isDark ? 'text-white' : 'text-[#064E3B]'
                 }`}>
-                  {activeNicheData.clientName} · {activeNicheData.category}
+                  {activeNicheData.id === 'ecommerce' ? `${activeNicheData.clientName} ${activeNicheData.category}` : `${activeNicheData.clientName} · ${activeNicheData.category}`}
                 </span>
                 <span className={`block text-[11px] sm:text-[12px] font-semibold ${
                   isDark ? 'text-white/60' : 'text-[#064E3B]/70'
